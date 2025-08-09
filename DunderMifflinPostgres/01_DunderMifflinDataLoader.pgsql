@@ -1,5 +1,5 @@
 -- Run after 00_DunderMifflinSchema.pgsql
-SET search_path = dm, public;absolute/path/to
+SET search_path = dunder_mifflin, public;absolute/path/to
 
 COPY categories        FROM 'absolute/path/to/DataFiles/Categories.txt'        WITH (FORMAT csv, DELIMITER '|', NULL '', HEADER false);
 COPY suppliers         FROM 'absolute/path/to/DataFiles/Suppliers.txt'         WITH (FORMAT csv, DELIMITER '|', NULL '', HEADER false);
