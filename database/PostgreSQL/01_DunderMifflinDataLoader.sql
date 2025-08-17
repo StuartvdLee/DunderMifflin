@@ -1,15 +1,219 @@
 -- Run after 00_DunderMifflinSchema.pgsql
-SET search_path = dunder_mifflin, public;
+SET search_path = dunder_mifflin,
+    public;
 
-COPY categories        FROM 'absolute/path/to/database/DataFiles/Categories.txt'        WITH (FORMAT csv, DELIMITER '|', NULL '', HEADER false);
-COPY suppliers         FROM 'absolute/path/to/database/DataFiles/Suppliers.txt'         WITH (FORMAT csv, DELIMITER '|', NULL '', HEADER false);
-COPY shippers          FROM 'absolute/path/to/database/DataFiles/Shippers.txt'          WITH (FORMAT csv, DELIMITER '|', NULL '', HEADER false);
-COPY regions           FROM 'absolute/path/to/database/DataFiles/Regions.txt'           WITH (FORMAT csv, DELIMITER '|', NULL '', HEADER false);
-COPY employeestatus    FROM 'absolute/path/to/database/DataFiles/EmployeeStatus.txt'    WITH (FORMAT csv, DELIMITER '|', NULL '', HEADER false);
-COPY customers         FROM 'absolute/path/to/database/DataFiles/Customers.txt'         WITH (FORMAT csv, DELIMITER '|', NULL '', HEADER false);
-COPY employees         FROM 'absolute/path/to/database/DataFiles/Employees.txt'         WITH (FORMAT csv, DELIMITER '|', NULL '', HEADER false);
-COPY products          FROM 'absolute/path/to/database/DataFiles/Products.txt'          WITH (FORMAT csv, DELIMITER '|', NULL '', HEADER false);
-COPY orders            FROM 'absolute/path/to/database/DataFiles/Orders1.txt'           WITH (FORMAT csv, DELIMITER '|', NULL '', HEADER false, ENCODING 'WIN1252'); -- Lazy solution for encoding
-COPY orders            FROM 'absolute/path/to/database/DataFiles/Orders2.txt'           WITH (FORMAT csv, DELIMITER '|', NULL '', HEADER false, ENCODING 'WIN1252'); -- Lazy solution for encoding
-COPY orderdetails      FROM 'absolute/path/to/database/DataFiles/OrderDetails1.txt'     WITH (FORMAT csv, DELIMITER '|', NULL '', HEADER false);
-COPY orderdetails      FROM 'absolute/path/to/database/DataFiles/OrderDetails2.txt'     WITH (FORMAT csv, DELIMITER '|', NULL '', HEADER false);
+-- Categories loading
+INSERT INTO categories (CategoryName, Description)
+VALUES  ('Printer Paper', 'Printer Paper'),
+        ('Other Paper Products', 'Other Paper Products'),
+        ('Writing instruments', 'Writing instruments'),
+        ('Misc. Office Supplies', 'Misc. Office Supplies'),
+        ('Electronics', 'Electronics'),
+        ('Printers', 'Printers'),
+        ('Cleaning and Sanitary Products', 'Cleaning and Sanitary Products'),
+        ('Furniture and decor', 'Furniture and decor');
+
+-- Customers loading
+INSERT INTO customers (CustomerCode, CompanyName, ContactName, ContactTitle, Address, City, Region, PostalCode, Country)
+VALUES  ('ALFKI', 'Burns Industries', 'Charles Montgomery Burns', 'Sales Representative', '47 Echo Lane', 'Scranton', 'PA', '18505', 'USA'),
+        ('ANATR', 'Los Pollos Hermanos', 'Gustavo Fring', 'Owner', 'Avda. de la 4275 Isleta Blvd SW', 'Albuquerque', 'NM', '87105', 'USA'),
+        ('ANTON', 'Stark Industries', 'Tony Stark', 'Owner', '10880 Malibu Point', 'Malibu', 'CA', '90265', 'USA'),
+        ('BERGS', 'Monsters, Inc.', 'James P. "Sulley" Sullivan', 'Manager', '44 Scare Circle', 'Wazowski', 'NY', '10002', 'USA'),
+        ('AROUT', 'Wayne Enterprises, Inc.', 'Bruce Wayne', 'Owner', '1007 Mountain Drive', 'Gotham City', 'NJ', '10201', 'USA'),
+        ('CENTC', 'The Derek Zoolander Center for Kids Who Can''t Read Good and Who Wanna Learn to Do Other Stuff Good Too', 'Derek Zoolander', 'Model', '42 Derek Lane', 'New York', 'NY', '10001', 'USA'),
+        ('DRACD', 'Miyagi-Do Karate', 'Nariyoshi Miyagi', 'Owner', '19223 Saticoy Street', 'Reseda', 'CA', '91335', 'USA'),
+        ('DUMON', 'Duff Beer', 'Bud Man', 'Spokesperson', '505 Brewer''s Lane', 'Springfield', 'MO', '65619', 'USA'), 
+        ('FISSA', 'Vandalay Industries', 'George Costanza', 'Senior Manager', '131 Mezcal', 'Scranton', 'PA', '18105', 'USA'),
+        ('FOLIG', 'Acme Industries', 'R.D. Runner', 'Director of Acquisitions', '184 Canyon Rd.', 'Scranton', 'PA', '18512', 'USA');
+
+-- EmployeeStatus loading
+INSERT INTO EmployeeStatus (StatusCode, StatusName)
+VALUES  ('-3', 'Retired'),
+        ('-2', 'Terminated'),
+        ('-1', 'Suspended'),
+        ('0', 'On Leave'),
+        ('1', 'Active');
+
+-- Employee loading
+INSERT INTO employees (LastName, FirstName, MiddleName, Title, TitleOfCourtesy, BirthDate, HireDate, TerminationDate, RehireDate, Address, City, Region, PostalCode, Country, HomePhone, Extension, Notes, ReportsTo, PhotoPath, StatusCode)
+VALUES  ('Mifflin', 'Robert', NULL, 'Co-founder', 'Mr.', '1919-02-14', '1949-01-01', '1972-08-18', NULL, '507 - 20th Ave. E. Apt. 2A', 'Seattle', 'WA', '98122', 'USA', '(206) 555-9857', NULL, 'Deceased in 1972', NULL, NULL, '-3'),
+        ('Dunder', 'Robert', NULL, 'Co-founder', 'Mr.', '1920-03-27', '1949-01-01', '2012-04-28', NULL, '908 W. Capital Way', 'Tacoma', 'WA', '98401', 'USA', '(206) 555-9482', '3457', 'Deceased in 2012', NULL, NULL, '-3'),
+        ('Bratton', 'Creed', NULL, 'Quality assurance rep', 'Mr', '1925-11-01', '1990-07-31', '2013-05-16', NULL, '722 Moss Bay Blvd.', 'Scranton', 'PA', '18512', 'USA', '(570) 555-3412', NULL, 'Incarcerated as of May 16, 2013', NULL, NULL, '-2'),
+        ('Hudson', 'Stanley', NULL, 'Salesperson', 'Mr.', '1958-02-19', '1996-04-04', '2013-03-16', NULL, 'P.O. Box 622', 'Goodland', 'FL', '34140', 'USA', 'None', NULL, NULL, NULL, NULL, '-3'),
+        ('Scott', 'Michael', NULL, 'Regional Manager', 'Mr.', '1965-03-15', '1992-05-06', '2011-04-28', '2009-04-23', '14 Garrett Hill', 'Boulder', 'CO', '80302', 'USA', '(303) 555-4848', '3453', NULL, NULL, NULL, '-2'),
+        ('Vance', 'Phyllis', NULL, 'Salesperson', 'Mrs.', '1965-07-10', '2001-08-11', NULL, NULL, 'Coventry House Miner Rd.', 'Scranton', 'PA', '18512', 'USA', '(570) 555-3429', '428', NULL, '7', NULL, '0'),
+        ('Schrute', 'Dwight', NULL, 'Regional Manager', 'Mr.', '1970-01-20', '1994-01-02', '2007-01-11', '2007-01-18', 'Rural Rt. 6', 'Honesdale', 'PA', '18431', 'USA', 'None', '147', NULL, '9', NULL, '0'),
+        ('Flenderson', 'Toby', NULL, 'Human Resources Coordinator', 'Mr.', '1963-02-22', '1996-03-05', '2013-05-16', '2008-11-20', '4726 - 11th Ave. N.E.', 'New York', 'NY', '10001', 'USA', '(570) 555-1189', NULL, NULL, NULL, NULL, '-2'),
+        ('Wallace', 'David', NULL, 'CEO', 'Mr.', '1965-02-13', '2012-05-03', NULL, NULL, '1485 Lomita Drive', 'Clarks Summit', 'PA', '18411', 'USA', 'Unlisted', NULL, NULL, NULL, NULL, '0'),
+        ('Halpert', 'Jim', NULL, 'Salesperson', 'Mr.', '1978-10-01', '1998-12-04', '2013-05-16', NULL, '336 E. 14th St.', 'Austin', 'TX', '78702', 'USA', NULL, NULL, NULL, NULL, NULL, '-2'),
+        ('Schrute', 'Angela', NULL, 'Director of Accounting', 'Mrs.', '1974-11-11', '1999-08-07', NULL, NULL, 'Rural Rt. 6', 'Honesdale', 'PA', '18431', 'USA', 'None', NULL, NULL, '7', NULL, '0'),
+        ('Martinez', 'Oscar', NULL, 'Accountant', 'Senator', '1972-03-08', '1999-09-07', NULL, NULL, '37 Somerset Lane', 'Dallas', 'PA', '18612', 'USA', 'Unlisted', NULL, NULL, '7', NULL, '0'),
+        ('Anderson', 'Roy', NULL, 'Warehouse Associate', 'Mr.', '1973-07-25', '2004-07-07', '2007-04-05', NULL, '18 Anderson Court', 'Clarks Summit', 'PA', '18411', 'USA', NULL, NULL, NULL, NULL, NULL, '-2'),
+        ('Halpert', 'Pam', NULL, 'Office Manager', 'Mrs.', '1979-03-25', '1999-11-02', '2013-05-16', NULL, '336 E. 14th St.', 'Austin', 'TX', '78702', 'USA', NULL, NULL, NULL, NULL, NULL, '-2'),
+        ('Palmer', 'Meredith', NULL, 'Supplier Relations Manager', 'Dr.', '1959-11-12', '1997-01-21', NULL, NULL, '4421 Coyle Pl', 'Scranton', 'PA', '18509', 'USA', 'None', '128', NULL, '7', NULL, '0'),
+        ('White', 'Devon', NULL, 'Quality Assurance Manager', 'Mr.', '1958-04-16', '2003-04-12', '2005-10-18', '2013-05-16', '131 E. 14th St. Apt 212', 'Scranton', 'PA', '18509', 'USA', '(570) 555-4996', '134', NULL, '7', NULL, '0'),
+        ('Truck', 'Ed', NULL, 'Regional Manager', 'Mr.', '1937-06-06', '1981-06-06', '2001-09-07', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Deceased 2006', NULL, NULL, '-3'),
+        ('Kapoor', 'Kelly', NULL, 'Customer Service Manager', 'Ms.', '1980-02-05', '1999-06-08', NULL, NULL, '123 Main St.', 'Scranton', 'PA', '18509', 'USA', NULL, '203', NULL, '7', NULL, '0'),
+        ('Packer', 'Todd', NULL, 'Salesperson', 'Mr.', '1962-08-24', '1988-08-11', '2012-03-08', NULL, '64 Route 23 East', 'Hump Hill', 'PA', '18862', 'USA', NULL, NULL, NULL, NULL, NULL, '-2'),
+        ('Bernard', 'Andrew', 'Baines', 'Regional Manager', 'Mr.', '1973-12-25', '2002-03-01', '2013-05-02', NULL, '16 Alumni Boulevard, Apt 633', 'Ithaca', 'NY', '14850', 'USA', '(607) 555-0349', NULL, NULL, NULL, NULL, '-2'),
+        ('Philbin', 'Darryl', NULL, 'Warehouse Director', 'Mr.', '1971-10-25', '2001-09-04', '2013-05-09', NULL, '408 E. 14th St.', 'Austin', 'TX', '78702', NULL, NULL, NULL, NULL, NULL, NULL, '-3'),
+        ('Malone', 'Kevin', NULL, 'Accountant', NULL, '1968-06-01', '2002-02-28', '2013-05-16', NULL, '3030 Adams', 'Scranton', 'PA', '18505', 'USA', '570-555-0137', NULL, NULL, NULL, NULL, '-3'),
+        ('Peets', 'Tom', NULL, 'Accountant', 'Mr.', '1970-08-27', '2002-08-27', '2004-12-24', NULL, '1921 E. Mill Road', 'Scranton', 'PA', '18505', 'USA', NULL, NULL, NULL, NULL, NULL, '-3'),
+        ('Howard', 'Ryan', 'Bailey', 'Temp', 'Mr.', '1979-07-31', '2008-09-25', '2008-05-15', '2008-09-25', '123 Main St.', 'Scranton', 'PA', '18509', 'USA', NULL, NULL, NULL, '19', NULL, '0'),
+        ('Levinson', 'Jan', NULL, 'Director', 'Ms.', '1967-06-29', '2002-03-31', '2007-05-17', NULL, '647 Penthouse Way, Suite 1834', 'Scranton', 'PA', '18509', 'USA', NULL, NULL, NULL, NULL, NULL, '-3'),
+        ('Porter', 'Joshua', NULL, 'Regional Manager', 'Mr.', '1965-09-09', '2002-03-31', '2006-11-09', NULL, '3211 Puskar Way', 'San Francisco', 'CA', '94105', 'USA', NULL, NULL, NULL, NULL, NULL, '-3'),
+        ('Filippelli', 'Karen', NULL, 'Regional Manager', NULL, '1976-02-25', '2003-04-01', NULL, NULL, '804 Carson', 'Utica', 'NY', '13501', 'USA', '315/555-2477', '1604', NULL, '9', NULL, '0'),
+        ('Kelley', 'Louanne', NULL, 'Customer Service Representative', NULL, '1951-04-30', '1987-07-07', '2007-01-06', NULL, '7 Beachfront Way', 'Los Angeles', 'CA', '90001', 'USA', NULL, NULL, NULL, NULL, NULL, '-3'),
+        ('Bennett', 'Jo', NULL, 'CEO', 'Ms.', '1949-02-28', '2010-02-01', '2012-05-03', NULL, '18 Beachport', 'Tallahassee', 'FL', '32301', 'USA', '850-555-6691', NULL, NULL, NULL, NULL, '-2'),
+        ('California', 'Robert', NULL, 'CEO', 'Mr.', '1960-02-07', '2011-05-19', '2012-05-03', NULL, '74E Scholl 49B', 'Brasov', NULL, '605409', 'RO', NULL, NULL, NULL, NULL, NULL, '-2'),
+        ('Vickers', 'Deangelo', 'Jeremitrius', 'Regional Manager', 'Mr.', '1967-07-16', '2011-04-14', '2011-05-05', NULL, '515 Westpoint Circle', 'Scranton', 'PA', '18505', 'USA', NULL, NULL, 'Deceased 2011', NULL, NULL, '-3'),
+        ('Simms', 'Cathy', NULL, 'Office Manager', 'Ms.', '1983-12-08', '2011-11-10', '2012-03-15', NULL, '99581 Industrial, #5329', 'Tallahassee', 'FL', '32301', 'USA', '850/555-8171', NULL, NULL, NULL, NULL, '-3'),
+        ('Hannon', 'Kelly', 'Erin', 'Receptionist', 'Miss', '1986-05-01', '2009-04-09', NULL, NULL, '1438A Southwest Boulevard', 'Scranton', 'PA', '18505', 'USA', '5705555519', NULL, NULL, '7', NULL, '0'),
+        ('Flax', 'Hollis', 'Partridge', 'Human Resources Manager', 'Ms.', '1972-03-03', '2007-05-15', '2011-04-28', NULL, '14 Garrett Hill', 'Boulder', 'CO', '80302', 'USA', '(303) 555-4848', NULL, NULL, NULL, NULL, '-3'),
+        ('Miner', 'Charles', NULL, 'Director', 'Mr.', '1972-09-06', '2009-03-19', '2009-12-10', NULL, '18434 87th Ave #2324', 'New York', 'NY', '10005', 'USA', '212/555-5477', NULL, NULL, NULL, NULL, '-3'),
+        ('Lewis', 'Gabriel', 'Susan', 'Special Projects Coordinator', 'Mr.', '1982-08-22', '2009-12-01', '2012-05-10', NULL, '816 Glasgow Lane', 'Dallas', 'PA', '18612', 'USA', '570/555-0157', NULL, NULL, NULL, NULL, '-3'),
+        ('Green', 'Clark', NULL, 'Salesperson', 'Mr.', '1985-05-05', '2012-09-20', NULL, NULL, '16 Tropicana Blvd. #1196', 'Scranton', 'PA', '18505', 'USA', '570/555-3307', NULL, NULL, '6', NULL, '0'),
+        ('Gross', 'Lloyd', NULL, 'Salesperson', 'Mr.', '1970-01-01', '2012-01-01', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '6', NULL, '0'),
+        ('Miller', 'Pete', NULL, 'Customer Service Representative', 'Mr.', '1985-02-14', '2012-09-20', NULL, NULL, '16 Tropicana Blvd. #707', 'Scranton', 'PA', '18505', 'USA', '(570)555-0004', NULL, NULL, '19', NULL, '0'),
+        ('Bertram', 'Nellie', NULL, 'Special Projects Coordinator', 'Ms.', '1970-10-12', '2011-05-19', '2013-05-16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '-3'),
+        ('Cordray', 'Danny', NULL, 'Salesperson', NULL, '1971-01-02', '2010-10-21', NULL, NULL, '9731 Executive Court', 'Scranton', 'PA', '18505', 'USA', '(570)555-9162', NULL, NULL, '6', NULL, '0'),
+        ('Johnson', 'Val', NULL, 'Warehouse Manager', NULL, '1974-06-17', '2011-10-06', NULL, NULL, '1484 Main St. #514', 'Scranton', 'PA', '18505', 'USA', NULL, NULL, NULL, '7', NULL, '0'),
+        ('Hasagawa', 'Hidetoshi', NULL, 'Warehouse Associate', NULL, '1962-01-30', '2005-02-01', NULL, NULL, '1484 Main St. #1171', 'Scranton', 'PA', '18505', 'USA', '5705555099', NULL, NULL, '44', NULL, '0'),
+        ('Nickerson', 'Nate', NULL, 'Warehouse Associate', NULL, '1975-12-14', '2010-10-14', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '44', NULL, '0'),
+        ('Lester', 'Glenn', NULL, 'Warehouse Associate', 'Mr.', '1968-06-30', '2005-09-01', NULL, NULL, '1651 Drury Lane', 'Scranton', 'PA', '18509', 'USA', '5705554391', NULL, NULL, '44', NULL, '0'),
+        ('Collins', 'Lonny', NULL, 'Warehouse Associate', 'Mr.', '1969-12-07', '2002-01-14', '2011-11-29', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '-3'),
+        ('Madsen', 'Madge', NULL, 'Warehouse Associate', 'Ms.', '1962-10-29', '2002-01-21', NULL, NULL, '834 Upland Drive', 'Scranton', 'PA', '18509', 'USA', '9035553480', NULL, NULL, '44', NULL, '0'),
+        ('Garfield', 'Jordan', NULL, 'Executive Assistant', NULL, NULL, '2011-05-05', '2011-05-19', NULL, '1131 Echo Lane', 'McKinney', 'TX', '75070', 'USA', NULL, NULL, NULL, NULL, NULL, '-3'),
+        ('Jannerone', 'Harry', NULL, 'Salesperson', NULL, '1956-10-28', '2004-05-02', NULL, NULL, '63 Escalade Circle', 'Binghamton', 'NY', '13554', 'USA', NULL, NULL, NULL, '6', NULL, '0'),
+        ('Smoterich-Barr', 'Hannah', NULL, 'Accountant', NULL, '1966-11-29', '2006-04-16', '2006-12-29', NULL, NULL, NULL, NULL, NULL, 'USA', NULL, NULL, NULL, NULL, NULL, '-3'),
+        ('Nash', 'Martin', NULL, 'Supplier Relations Associate', NULL, '1966-01-30', '2006-04-23', '2006-11-30', NULL, '5114 Executive Dr. #492', 'Stamford', 'CT', '06831', 'USA', NULL, NULL, NULL, NULL, NULL, '-3'),
+        ('Gardner', 'Anthony', NULL, 'Salesperson', NULL, '1972-08-01', '2006-04-16', '2006-11-16', NULL, '10842 Palisades Ct', 'Stamford', 'CT', '06831', 'USA', NULL, NULL, NULL, NULL, NULL, '-3'),
+        ('Craig', 'Rolando', NULL, 'Administrative Assistant', NULL, '1977-03-21', '2008-01-04', NULL, NULL, '742 Evergreen Terrace', 'Utica', 'NY', '13501', 'USA', NULL, NULL, NULL, '28', NULL, '0'),
+        ('Nugent', 'Ben', NULL, 'Administrative Assistant', NULL, '1970-04-01', '2004-01-04', NULL, NULL, '1824 Updog Lane', 'Utica', 'NY', '13502', 'USA', NULL, NULL, NULL, '28', NULL, '0');
+
+-- Regions loading
+INSERT INTO Regions (RegionName, IsActive)
+VALUES  ('Scranton PA', true),
+        ('Utica, NY', true),
+        ('Camden, NJ', false),
+        ('Akron, OH', true),
+        ('New York (Corporate)', true),
+        ('Rochester, NY', true),
+        ('Syracuse, NY', true),
+        ('Binghamton, NY', false),
+        ('Buffalo, NY', false),
+        ('Pittsfield, MA', false),
+        ('Stamford, CT', false),
+        ('Yonkers, NY', false),
+        ('Albany, NY', true),
+        ('Nashua, NH', true);
+
+-- Shippers loading
+INSERT INTO Shippers (CompanyName, Phone)
+VALUES  ('Speedy Express', '(503) 555-9831'),
+        ('United Package', '(503) 555-3199'),
+        ('Federal Shipping', '(503) 555-9931');
+
+-- Orders loading
+INSERT INTO Orders (CustomerID, EmployeeID, OrderDate, RequiredDate, ShippedDate, ShipVia, Freight, ShipName, ShipAddress, ShipCity, ShipRegion, ShipPostalCode, ShipCountry)
+VALUES  (1, 5, '1996-07-04', '1996-08-01', '1996-07-16', 3, 32.38, 'Brainlounge', '59 Bayle Lane', 'Scranton', 'PA', '18505', 'USA'),
+        (2, 20, '1996-07-05', '1996-08-16', '1996-07-10', 1, 11.61, 'Ainyx', '48 Prairie', 'Scranton', 'PA', '18505', 'USA'),
+        (3, 20, '1996-07-08', '1996-08-05', '1996-07-12', 2, 65.83, 'Twitterwire', '57 Lonesome Road', 'Scranton', 'PA', '18505', 'USA'),
+        (4, 5, '1996-07-08', '1996-08-05', '1996-07-15', 1, 41.34, 'Realpoint', '2 Commerce St.', 'Scranton', 'PA', '18505', 'USA'),
+        (5, 4, '1996-07-09', '1996-08-06', '1996-07-11', 2, 51.30, 'Outbridge Consulting', '255 Tirou Boulevard', 'Scranton', 'PA', '18505', 'USA'),
+        (6, 20, '1996-07-10', '1996-07-24', '1996-07-16', 2, 58.17, 'Twitterwire', '57 Lonesome Road', 'Scranton', 'PA', '18505', 'USA'),
+        (7, 5, '1996-07-11', '1996-08-08', '1996-07-23', 2, 22.98, 'The Estelle Leonard Talent Agency', '8488 101st Ave #4382', 'New York', 'NY', '10201', 'USA'),
+        (8, 5, '1996-07-12', '1996-08-09', '1996-07-15', 3, 148.33, 'Thoughtbeat', '2375 Waypoint', 'Scranton', 'PA', '18505', 'USA'),
+        (9, 7, '1996-07-15', '1996-08-12', '1996-07-17', 2, 13.97, 'Prestige Postal Company', '12 Rue de Mercado', 'Scranton', 'PA', '18505', 'USA'),
+        (10, 7, '1996-07-16', '1996-08-13', '1996-07-22', 3, 81.91, 'Avamba', '8035 Charles St.', 'Scranton', 'PA', '18505', 'USA'),
+        (10, 7, '1996-07-17', '1996-08-14', '1996-07-23', 1, 140.51, 'Bendini, Lambert, & Locke', '18 Waterway Place', 'Memphis', 'TN', '38018', 'USA'),
+        (9, 7, '1996-07-18', '1996-08-15', '1996-07-25', 3, 3.25, 'The Derek Zoolander Center for Kids Who Can''t Read Good and Who Wanna Learn to Do Other Stuff Good Too', '42 Derek Lane', 'New York', 'NY', '10001', 'USA'),
+        (8, 5, '1996-07-19', '1996-08-16', '1996-07-29', 1, 55.09, 'Zazio', '369 Westheimer', 'Scranton', 'PA', '18505', 'USA'),
+        (7, 4, '1996-07-19', '1996-08-16', '1996-07-30', 2, 3.05, 'Buzzster', '1237 Pacific', 'Scranton', 'PA', '18505', 'USA'),
+        (6, 7, '1996-07-22', '1996-08-19', '1996-07-25', 3, 48.29, 'Rattlesnake Canyon Grocery', '2817 Milton Dr.', 'Albuquerque', 'NM', '87110', 'USA'),
+        (5, 20, '1996-07-23', '1996-08-20', '1996-07-31', 3, 146.06, 'Bendini, Lambert, & Locke', '18 Waterway Place', 'Memphis', 'TN', '38018', 'USA'),
+        (4, 4, '1996-07-24', '1996-08-21', '1996-08-23', 3, 3.67, 'Binford Tools', '10101 Circular Drive', 'Dallas', 'PA', '18519', 'USA'),
+        (3, 7, '1996-07-25', '1996-08-22', '1996-08-12', 1, 55.28, 'Bayside High School', '104 Smith Drive', 'Palisades', 'CA', '90272', 'USA'),
+        (2, 7, '1996-07-26', '1996-09-06', '1996-07-31', 3, 25.73, 'Wikizz', '38 Turningway Lane', 'Scranton', 'PA', '18505', 'USA'),
+        (1, 7, '1996-07-29', '1996-08-26', '1996-08-06', 1, 208.58, 'Nakatomi Corporation', '1 Nakatomi Plaza', 'Scranton', 'PA', '18105', 'USA');
+
+-- Suppliers loading
+INSERT INTO Suppliers (CompanyName, ContactName, ContactTitle, Address, City, Region, PostalCode, Country, Phone, Fax, HomePage)
+VALUES  ('Sabre', 'Charlotte Cooper', 'Purchasing Manager', '49 Gilbert St.', 'Scranton', 'PA', '18505', 'USA', NULL, NULL, NULL),
+        ('Pizza By Alfredo', 'Shelley Burke', 'Order Administrator', 'P.O. Box 78934', 'Scranton', 'PA', '18505', 'USA', NULL, NULL, NULL),
+        ('Alfredo''s Pizza Cafe', 'Regina Murphy', 'Sales Representative', '707 Oxford Rd.', 'Scranton', 'PA', '18505', 'USA', NULL, NULL, NULL),
+        ('Tokyo Traders', 'Yoshi Nagase', 'Marketing Manager', '9-8 Sekimai Musashino-shi', 'Tokyo', NULL, '100', 'Japan', '(03) 3555-5011', NULL, NULL),
+        ('Office Labs', 'Anthony Salvana', 'Export Administrator', 'Calle del Rosal 4', 'Oviedo', 'Asturias', '33007', 'Mexico', '(98) 598 76 54', NULL, NULL),
+        ('Prince Paper', 'Roger Prince', 'Owner', '92 Industrial', 'Scranton', 'PA', '18505', 'USA', '581/555-0234', NULL, 'Mayumi''s (on the World Wide Web)#http://www.microsoft.com/accessdev/sampleapps/mayumi.htm#'),
+        ('Hammermill', 'Evan Price', 'Account Executive', '74 Rose St. Moonie Ponds', 'Melbourne', 'FL', '43268', 'USA', '800/555-0434', '(03) 444-6588', NULL),
+        ('Binghamton Digital', 'Martin Bein', 'Marketing Manager', '511 Bell Dr.', 'Binghamton', 'NY', '13901', 'Germany', '(607) 555-4947', NULL, NULL),
+        ('Inked', 'Cheryl Saylor', 'Regional Account Rep.', '3400 - 8th Avenue Suite 210', 'Bend', 'OR', '97101', 'USA', '(503) 555-9931', NULL, NULL),
+        ('Laverne''s Pies and Tires', 'Laverne Smith', 'Owner', 'Rt. 11 North', 'Hop Bottom', 'PA', '18824', 'USA', NULL, NULL, NULL),
+        ('Schrute Farms', 'Dwight Schrute', 'Owner', 'Rural Rt. 6', 'Honesdale', 'PA', '18431', 'USA', NULL, NULL, NULL),
+        ('Industrial Supply', 'Sam Malone', 'Manager', '1139 Oxford Rd.', 'Scranton', 'PA', '18505', NULL, NULL, NULL, NULL);
+
+-- Products loading
+INSERT INTO Products (ProductName, ProductDescription, SupplierID, CategoryID, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued)
+VALUES  ('FORAY Magnetic Dry-Erase Board, 8-1/2" x 11", White Board, Black Plastic Frame', 'FORAY Magnetic Dry-Erase Board, 8-1/2" x 11", White Board, Black Plastic Frame', 5, 4, 'Each', 3.99, 39, 0, 10, false),
+        ('Duracell Coppertop Alkaline AA Batteries, Pack Of 24 Batteries', 'Duracell Coppertop Alkaline AA Batteries, Pack Of 24 Batteries', 12, 5, '24/pack', 25.59, 17, 40, 25, false),
+        ('Dunder Mifflin Notepads, 5" x 8", Narrow Ruled', 'Dunder Mifflin Notepads, 5" x 8", Narrow Ruled, White, 50 Sheets/Pad, 12 Pads/Pack (51296/23642)', 12, 2, '12/pack', 12.44, 13, 70, 25, false),
+        ('Charmin Essentials Soft 2-Ply Toilet Paper, White, 200 Sheets x 20 Rolls', 'Charmin Essentials Soft 2-Ply Toilet Paper, White, 200 Sheets x 20 Rolls', 7, 7, '20 rolls/box', 15.95, 53, 0, 0, false),
+        ('GERM-X Original Hand Sanitizer, 32-Oz Flip-Cap Bottle (2 pack)', 'GERM-X Original Hand Sanitizer, 32-Oz Flip-Cap Bottle (2 pack)', 7, 7, '2, 32oz bottles', 18.90, 0, 0, 0, true),
+        ('HP 951 Yellow Original Ink Cartridge (CN052AN)', 'HP 951 Yellow Original Ink Cartridge (CN052AN)', 5, 6, 'Each', 24.89, 120, 0, 25, false),
+        ('HP Office20 8.5" x 11" Multipurpose Paper, 1 Ream', 'HP Office20 8.5" x 11" Multipurpose Paper, 20 lbs., 92 Brightness, 500/Ream (HPC8511)', 7, 1, '1, 500-sheet ream', 4.47, 15, 0, 10, false),
+        ('HP 414A Black Toner Cartridge (W2020A)', 'HP 414A Black Toner Cartridge (W2020A)', 8, 6, 'Each', 117.99, 6, 0, 0, false),
+        ('Sabre Pro M29w All-in-One Wireless Laser Printer (Y5S53A)', 'Sabre Pro M29w All-in-One Wireless Laser Printer (Y5S53A)', 1, 6, NULL, 139.99, 1, 0, 0, true),
+        ('Hammermill Copy Plus Paper, 8.5" x 11", 10 Reams', 'Hammermill Copy Plus Paper, 8.5" x 11", 20 lbs., White, 500 Sheets/Ream, 10 Reams/Carton (105007)', 7, 1, '10, 500-sheet reams', 32.99, 31, 0, 0, false),
+        ('Duracell Coppertop Alkaline C Batteries, Box Of 12', 'Duracell Coppertop Alkaline C Batteries, Box Of 12', 12, 5, '12/box', 29.99, 22, 2, 11, false),
+        ('JAM Paper Booklet Envelopes With Gummed Closure, #10, 4 1/8" x 9 1/2", Brown Kraft, Pack Of 25', 'JAM Paper Booklet Envelopes With Gummed Closure, #10, 4 1/8" x 9 1/2", Brown Kraft, Pack Of 25', 7, 1, '25/pack', 1.99, 86, 0, 0, false),
+        ('Paper Mate Profile Retractable Ballpoint Pens', 'Paper Mate Profile Retractable Ballpoint Pens', 7, 1, '1 dozen', 6.12, 24, 0, 5, false),
+        ('JAM Paper Cover Card Stock, 8 1/2" x 11", 36 Lb, Translucent Clear, Pack Of 50 Sheets', 'JAM Paper Cover Card Stock, 8 1/2" x 11", 36 Lb, Translucent Clear, Pack Of 50 Sheets', 7, 1, '50/pack', 23.25, 35, 0, 0, false),
+        ('Viva Multi-Surface Cloth Choose-A-Sheet Cloth-Like Kitchen Paper Towels', 'Viva Multi-Surface Cloth Choose-A-Sheet Cloth-Like Kitchen Paper Towels, 11" x 5-15/16", White, 165 Sheets Per Roll, Pack Of 6 Rolls', 7, 7, '6/pack', 16.99, 39, 0, 5, false),
+        ('TUL Retractable Gel Pens, Medium Point, 0.7 mm, Silver Barrel, Blue Ink, Pack Of 12 Pens', 'TUL Retractable Gel Pens, Medium Point, 0.7 mm, Silver Barrel, Blue Ink, Pack Of 12 Pens', 11, 3, '12/pack', 17.99, 9, 0, 10, false),
+        ('HP 410A Original Black Toner Cartridge (CF410A)', 'HP 410A Original Black Toner Cartridge (CF410A)', 3, 6, 'Each', 93.89, 0, 0, 0, true),
+        ('Universal 8.5" x 11" Multipurpose Paper, 2400/Carton (UNV15802)', 'Universal 8.5" x 11" Multipurpose Paper, 2400/Carton (UNV15802)', 7, 1, 'Cartin (2400 sheets)', 77.99, 42, 0, 0, false),
+        ('TRU RED Pre-Sharpened Wooden Pencil, 2.2mm, #2', 'TRU RED Pre-Sharpened Wooden Pencil, 2.2mm, #2 Medium Lead, 24/Pack (TR58558)', 5, 3, '24/pack', 2.99, 25, 0, 5, false),
+        ('Mohawk Strathmore 8 1/2" x 11" 24 lbs. Writing Laid Paper, Soft White, 5000/Case', 'Mohawk Strathmore 8 1/2" x 11" 24 lbs. Writing Laid Paper, Soft White, 5000/Case', 7, 1, 'Case (5000 sheets)', 289.99, 40, 0, 0, false);
+
+-- OrderDetails loading
+INSERT INTO OrderDetails (OrderID, ProductID, UnitPrice, Quantity, Discount, LineTotal)
+VALUES  (1, 19, 22.00, 2, 0.000, 44.00),
+        (1, 6, 21.00, 12, 0.000, 252.00),
+        (2, 2, 251.4265, 3, 0.000, 754.28),
+        (3, 6, 81.00, 14, 0.200, 907.20),
+        (3, 19, 171.9731, 54, 0.000, 9286.55),
+        (3, 1, 2.50, 10, 0.000, 25.00),
+        (4, 14, 14.00, 1, 0.000, 14.00),
+        (4, 7, 18.00, 1, 0.000, 18.00),
+        (5, 13, 17.5317, 56, 0.075, 908.14),
+        (5, 14, 14.00, 10, 0.000, 140.00),
+        (6, 11, 16.25, 14, 0.200, 182.00),
+        (7, 17, 123.2358, 57, 0.000, 7024.44),
+        (8, 20, 12.50, 10, 0.300, 87.50),
+        (8, 8, 296.7733, 14, 0.075, 3843.21),
+        (8, 4, 34.80, 5, 0.000, 174.00),
+        (8, 9, 15.00, 14, 0.000, 210.00),
+        (9, 12, 212.5858, 23, 0.000, 4889.47),
+        (10, 10, 10.00, 36, 0.250, 270.00),
+        (10, 11, 21.35, 4, 0.100, 76.86),
+        (10, 5, 418.4854, 23, 0.075, 8903.28),
+        (11, 3, 18.0755, 7, 0.000, 126.53),
+        (12, 8, 401.7333, 36, 0.050, 13739.28),
+        (12, 17, 439.0988, 31, 0.000, 13612.06),
+        (13, 16, 23.25, 9, 0.000, 209.25),
+        (13, 3, 236.2267, 5, 0.000, 1181.13),
+        (14, 10, 94.2465, 32, 0.075, 2789.70),
+        (15, 9, 237.8695, 19, 0.000, 4519.52),
+        (15, 2, 373.6674, 32, 0.000, 11957.36),
+        (15, 17, 276.5642, 26, 0.000, 7190.67),
+        (16, 7, 31.23, 4, 0.000, 124.92),
+        (17, 18, 159.4202, 19, 0.000, 3028.98),
+        (17, 1, 274.6049, 6, 0.000, 1647.63),
+        (18, 1, 18.00, 3, 0.000, 54.00),
+        (18, 5, 263.50, 4, 0.200, 843.20),
+        (18, 17, 219.9652, 55, 0.000, 12098.09),
+        (19, 4, 14.00, 16, 0.250, 168.00),
+        (19, 19, 9.50, 1, 0.200, 7.60),
+        (20, 20, 409.6835, 28, 0.000, 11471.14),
+        (20, 18, 336.1484, 23, 0.000, 7731.41),
+        (20, 7, 53.00, 5, 0.000, 265.00);
