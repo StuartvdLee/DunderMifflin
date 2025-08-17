@@ -257,3 +257,5 @@ _PublishWebsites/
 # Yarn/NPM lock
 yarn.lock
 package-lock.json
+
+appsettings.Development.json
