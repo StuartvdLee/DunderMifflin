@@ -1,10 +1,6 @@
 using System.Reflection;
-using DunderMifflinApi.Features;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace DunderMifflinApi;
+namespace DunderMifflinApi.Features;
 
 public static class EndpointGroupExtensions
 {

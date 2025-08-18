@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
-using DunderMifflinApi;
 using DunderMifflinApi.Data;
+using DunderMifflinApi.Features;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,8 +18,6 @@ builder.Services.AddDbContext<DunderMifflinDbContext>(options =>
 builder.Services.AddEndpointGroups();
 
 var app = builder.Build();
-
-app.MapGet("/", () => "Hello World!");
 
 app.MapEndpointGroups();
 
