@@ -1,11 +1,14 @@
 using DunderMifflinApi.Data;
+using DunderMifflinApi.Features;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 
 namespace DunderMifflinApi.Features.OrderDetail;
 
-public static class EndpointGroup
+public class EndpointGroup : IEndpointGroup
 {
-    public static IEndpointRouteBuilder MapToOrderDetailEndpointGroup(this IEndpointRouteBuilder app)
+    public void Map(IEndpointRouteBuilder app)
     {
         var group = app.MapGroup("/orderdetails");
 
@@ -16,7 +19,5 @@ public static class EndpointGroup
             await db.Orderdetails.FindAsync(id) is var od && od != null
                 ? Results.Ok(od)
                 : Results.NotFound());
-
-        return group;
     }
 }

@@ -1,11 +1,14 @@
 using DunderMifflinApi.Data;
+using DunderMifflinApi.Features;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 
 namespace DunderMifflinApi.Features.EmployeeStatus;
 
-public static class EndpointGroup
+public class EndpointGroup : IEndpointGroup
 {
-    public static IEndpointRouteBuilder MapToEmployeeStatusEndpointGroup(this IEndpointRouteBuilder app)
+    public void Map(IEndpointRouteBuilder app)
     {
         var group = app.MapGroup("/employeestatuses");
 
@@ -16,7 +19,5 @@ public static class EndpointGroup
             await db.Employeestatuses.FindAsync(id) is var es && es != null
                 ? Results.Ok(es)
                 : Results.NotFound());
-
-        return group;
     }
 }
