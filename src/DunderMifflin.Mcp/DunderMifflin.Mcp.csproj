@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ModelContextProtocol" Version="0.3.0-preview.4" />
+    <PackageReference Include="ModelContextProtocol.AspNetCore" Version="0.3.0-preview.4" />
+    <ProjectReference Include="../DunderMifflin.Api/DunderMifflin.Api.csproj" />
+  </ItemGroup>
+
+</Project>
+

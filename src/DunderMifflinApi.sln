@@ -1,6 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# 
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DunderMifflin.Api", "DunderMifflin.Api\DunderMifflin.Api.csproj", "{CB5B1B96-A9F2-43D9-BA48-8D896A7A8B4A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DunderMifflin.Mcp", "DunderMifflin.Mcp\DunderMifflin.Mcp.csproj", "{D741B61F-3073-4ED7-9424-E5AE0E237E49}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +15,9 @@ Global
 		{CB5B1B96-A9F2-43D9-BA48-8D896A7A8B4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB5B1B96-A9F2-43D9-BA48-8D896A7A8B4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CB5B1B96-A9F2-43D9-BA48-8D896A7A8B4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D741B61F-3073-4ED7-9424-E5AE0E237E49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D741B61F-3073-4ED7-9424-E5AE0E237E49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D741B61F-3073-4ED7-9424-E5AE0E237E49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D741B61F-3073-4ED7-9424-E5AE0E237E49}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
