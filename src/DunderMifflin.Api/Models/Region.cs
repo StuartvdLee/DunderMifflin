@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace DunderMifflin.Api.Models;
+
+public partial class Region
+{
+    public int Regionid { get; set; }
+
+    public string Regionname { get; set; } = null!;
+
+    public bool Isactive { get; set; }
+}
