@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DunderMifflinApi", "DunderMifflinApi\DunderMifflinApi.csproj", "{CB5B1B96-A9F2-43D9-BA48-8D896A7A8B4A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DunderMifflin.Api", "DunderMifflin.Api\DunderMifflin.Api.csproj", "{CB5B1B96-A9F2-43D9-BA48-8D896A7A8B4A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
