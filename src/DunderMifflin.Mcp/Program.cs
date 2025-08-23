@@ -1,17 +1,5 @@
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.DependencyInjection;
-using ModelContextProtocol.AspNetCore;
-using ModelContextProtocol.Server;
-using System;
-using System.Net.Http;
-
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Logging.AddConsole(o =>
-{
-    // Log everything to stderr so MCP clients receive logs
-    o.LogToStandardErrorThreshold = LogLevel.Trace;
-});
+builder.Logging.AddConsole();
 
 builder.Services.AddHttpClient("Api", http =>
     http.BaseAddress = new Uri(builder.Configuration["ApiBaseUrl"]!));
@@ -25,7 +13,6 @@ builder.Services
 
 var app = builder.Build();
 
-app.MapMcp("/mcp");
+app.MapMcp();
 
 await app.RunAsync();
-
