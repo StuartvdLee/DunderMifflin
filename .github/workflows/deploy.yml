@@ -22,3 +22,15 @@ jobs:
           client-id: ${{ secrets.CLIENT_ID }}
           tenant-id: ${{ secrets.TENANT_ID }}
           subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
+
+      - name: Check and create resource group if it doesn't exist
+        run: |
+          RG_NAME="dundermifflin-rg"
+          LOCATION="westeurope"
+
+          if az group show --name $RG_NAME &>/dev/null; then
+            echo "Resource group '$RG_NAME' already exists."
+          else
+            echo "Creating resource group '$RG_NAME' in $LOCATION..."
+            az group create --name $RG_NAME --location $LOCATION
+          fi
