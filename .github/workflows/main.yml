@@ -26,5 +26,6 @@ jobs:
         run: dotnet restore
         working-directory: src
 
-      # - name: Build
-      #   run: dotnet build --no-restore --configuration Release
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+        working-directory: src
