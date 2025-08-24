@@ -16,6 +16,9 @@ jobs:
       contents: read
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
       - name: Azure Login
         uses: Azure/login@v2.3.0
         with:
@@ -34,3 +37,9 @@ jobs:
             echo "Creating resource group '$RG_NAME' in $LOCATION..."
             az group create --name $RG_NAME --location $LOCATION
           fi
+
+      - name: Check Bicep
+        run: |
+          az deployment group what-if `
+          --resource-group dundermifflin-rg `
+          --template-file "bicep/main.bicep"
