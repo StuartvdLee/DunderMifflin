@@ -9,6 +9,8 @@ jobs:
   Deploy:
     runs-on: ubuntu-latest
 
+    environment: Dev
+
     permissions:
       id-token: write
       contents: read
