@@ -20,6 +20,6 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2024-11-01' = {
     capacity: 1
   }
   properties: {
-    reserved: false
+    reserved: true // For Linux
   }
 }
