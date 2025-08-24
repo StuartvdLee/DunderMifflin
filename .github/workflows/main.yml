@@ -1,6 +1,6 @@
-name: Build and deploy Dunder Mifflin application
+name: Build Dunder Mifflin application
 
-run-name: Build and deploy
+run-name: Build Dunder Mifflin application
 
 on:
   workflow_dispatch:
