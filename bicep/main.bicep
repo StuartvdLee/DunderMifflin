@@ -20,3 +20,12 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2024-11-01' = {
     reserved: true // For Linux
   }
 }
+
+resource webApp 'Microsoft.Web/sites@2024-11-01' = {
+  name: '${appName}-app'
+  location: location
+  properties: {
+    serverFarmId: appServicePlan.id
+    publicNetworkAccess: 'Enabled'
+  }
+}
