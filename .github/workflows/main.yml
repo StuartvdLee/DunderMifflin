@@ -18,7 +18,7 @@ jobs:
           dotnet-version: 9.0
 
       - name: Restore dependencies
-        run: dotnet restore ./src/
+        run: dotnet restore ./src/DunderMifflin.sln
 
       - name: Build
         run: dotnet build --no-restore --configuration Release
