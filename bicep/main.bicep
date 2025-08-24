@@ -9,9 +9,10 @@ param appName string = 'dundermifflin'
 @description('SKU for the App Service Plan')
 param skuName string = 'F1'
 
-resource appServicePlan 'Microsoft.Web/serverfarms@2023-12-01' = {
+resource appServicePlan 'Microsoft.Web/serverfarms@2024-11-01' = {
   name: '${appName}-asp'
   location: location
+  kind: 'linux'
   sku: {
     name: skuName
     tier: 'Free'
