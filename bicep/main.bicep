@@ -19,4 +19,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2024-11-01' = {
     size: skuName
     capacity: 1
   }
+  properties: {
+    reserved: false
+  }
 }
