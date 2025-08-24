@@ -4,8 +4,6 @@ run-name: Build and deploy
 
 on:
   workflow_dispatch:
-  push:
-    branches: [feature/deploy]
   pull_request:
     branches: [main]
 
