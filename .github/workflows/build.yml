@@ -23,9 +23,9 @@ jobs:
           dotnet-version: 9.0
 
       - name: Restore dependencies
-        run: dotnet restore
         working-directory: src
+        run: dotnet restore
 
       - name: Build
-        run: dotnet build --no-restore --configuration Release
         working-directory: src
+        run: dotnet build --no-restore --configuration Release

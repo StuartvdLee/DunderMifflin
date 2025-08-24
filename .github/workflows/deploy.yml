@@ -39,7 +39,8 @@ jobs:
           fi
 
       - name: Check Bicep
+        working-directory: bicep
         run: |
           az deployment group what-if `
           --resource-group dundermifflin-rg `
-          --template-file "bicep/main.bicep"
+          --template-file "main.bicep"
