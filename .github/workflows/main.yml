@@ -12,22 +12,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # - name: Checkout repository
-      #   uses: actions/checkout@v5.0.0
-
-      - name: directory
-        run: pwd
-
-      - name: list files
-        run: ls -la
-
       - name: Setup .NET
         uses: actions/setup-dotnet@v3.4.2
         with:
           dotnet-version: 9.0
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore ./src/
 
       - name: Build
         run: dotnet build --no-restore --configuration Release
