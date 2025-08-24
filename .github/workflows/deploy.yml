@@ -12,8 +12,8 @@ jobs:
   DeployInfra:
     name: Deploy infra
     runs-on: ubuntu-latest
-
     environment: Dev
+    timeout-minutes: 5
 
     permissions:
       id-token: write
