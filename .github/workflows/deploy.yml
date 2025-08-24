@@ -5,6 +5,9 @@ run-name: Deploy Dunder Mifflin application
 on:
   workflow_dispatch:
 
+env:
+  resourceGroupName: dundermifflin-rg
+
 jobs:
   DeployInfra:
     name: Deploy infra
@@ -29,28 +32,36 @@ jobs:
 
       - name: Check and create resource group if it doesn't exist
         run: |
-          RG_NAME="dundermifflin-rg"
           LOCATION="westeurope"
 
-          if az group show --name $RG_NAME &>/dev/null; then
-            echo "Resource group '$RG_NAME' already exists."
+          if az group show --name $resourceGroupName &>/dev/null; then
+            echo "Resource group '$resourceGroupName' already exists."
           else
-            echo "Creating resource group '$RG_NAME' in $LOCATION..."
-            az group create --name $RG_NAME --location $LOCATION
+            echo "Creating resource group '$resourceGroupName' in $LOCATION..."
+            az group create --name $resourceGroupName --location $LOCATION
           fi
 
       - name: Check infra
         id: checkinfra
         working-directory: bicep
         run: |
-          az deployment group what-if \
-          --resource-group dundermifflin-rg \
-          --template-file main.bicep \
+          output="$(az deployment group what-if \
+            --resource-group dundermifflin-rg \
+            --template-file main.bicep)"
+
+          echo "$output"
+
+          if echo "$output" | grep -q "Resource changes: no change."; then
+            echo "changes=0" >> "$GITHUB_OUTPUT"
+          else
+            echo "changes=1" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Deploy infra
-        if: steps.checkinfra.outputs.changes != '0'
+        # Only run this step if there are infra changes
+        if: steps.checkinfra.outputs.changes == '1'
         working-directory: bicep
         run: |
           az deployment group create \
-          --resource-group dundermifflin-rg \
+          --resource-group $resourceGroupName \
           --template-file "main.bicep"
