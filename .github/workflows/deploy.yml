@@ -41,6 +41,6 @@ jobs:
       - name: Check Bicep
         working-directory: bicep
         run: |
-          az deployment group what-if \
+          az deployment group \
           --resource-group dundermifflin-rg \
           --template-file "main.bicep"
