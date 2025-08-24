@@ -17,9 +17,15 @@ jobs:
         with:
           dotnet-version: 9.0
 
-      - name: Restore dependencies
-        run: dotnet restore
-        working-directory: src
+      - name: switch directories
+        run: cd src
 
-      - name: Build
-        run: dotnet build --no-restore --configuration Release
+      - name: ls
+        run: ls -la
+
+      # - name: Restore dependencies
+      #   run: dotnet restore
+      #   working-directory: src
+
+      # - name: Build
+      #   run: dotnet build --no-restore --configuration Release
