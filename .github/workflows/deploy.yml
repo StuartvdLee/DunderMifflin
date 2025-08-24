@@ -51,10 +51,10 @@ jobs:
 
           echo "$output"
 
-          if echo "$output" | grep -q "Resource changes: no change."; then
-            echo "changes=0" >> "$GITHUB_OUTPUT"
-          else
+          if echo "$output" | grep -Eq '^[[:space:]]*[+\-~!]' ; then
             echo "changes=1" >> "$GITHUB_OUTPUT"
+          else
+            echo "changes=0" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Deploy infra
