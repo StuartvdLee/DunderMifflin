@@ -6,7 +6,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  Deploy:
+  DeployInfra:
+    name: Deploy infra
     runs-on: ubuntu-latest
 
     environment: Dev
@@ -38,7 +39,7 @@ jobs:
             az group create --name $RG_NAME --location $LOCATION
           fi
 
-      - name: Check Bicep
+      - name: Deploy infra
         working-directory: bicep
         run: |
           az deployment group \
