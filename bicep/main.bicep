@@ -17,7 +17,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2024-11-01' = {
     name: skuName
     tier: 'Free'
     size: skuName
-    capacity: 1
+    capacity: 0
   }
   properties: {
     reserved: true // For Linux
