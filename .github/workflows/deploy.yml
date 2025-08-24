@@ -43,18 +43,11 @@ jobs:
         id: checkinfra
         working-directory: bicep
         run: |
-          # Run what-if and capture JSON (machine-readable)
-          result="$(az deployment group what-if \
+          az deployment group what-if \
           --resource-group dundermifflin-rg \
           --template-file main.bicep \
           --result-format FullResourcePayloads \
-          --output json --no-pretty-print)"
-
-          # Count only meaningful changes (Create/Modify/Delete)
-          changes="$(jq '[.changes[] | select(.changeType != "NoChange" and .changeType != "Ignore")] | length' <<< "$result")"
-
-          echo "What-if found $changes change(s)."
-          echo "changes=$changes" >> "$GITHUB_OUTPUT"
+          --output json --no-pretty-print > whatif.json
 
       - name: Deploy infra
         if: steps.checkinfra.outputs.changes != '0'
