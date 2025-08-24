@@ -39,7 +39,25 @@ jobs:
             az group create --name $RG_NAME --location $LOCATION
           fi
 
+      - name: Check infra
+        id: checkinfra
+        working-directory: bicep
+        run: |
+          # Run what-if and capture JSON (machine-readable)
+          result="$(az deployment group what-if \
+          --resource-group dundermifflin-rg \
+          --template-file main.bicep \
+          --result-format FullResourcePayloads \
+          --output json --no-pretty-print)"
+
+          # Count only meaningful changes (Create/Modify/Delete)
+          changes="$(jq '[.changes[] | select(.changeType != "NoChange" and .changeType != "Ignore")] | length' <<< "$result")"
+
+          echo "What-if found $changes change(s)."
+          echo "changes=$changes" >> "$GITHUB_OUTPUT"
+
       - name: Deploy infra
+        if: steps.checkinfra.outputs.changes != '0'
         working-directory: bicep
         run: |
           az deployment group create \
