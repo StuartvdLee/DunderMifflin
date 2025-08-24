@@ -46,8 +46,6 @@ jobs:
           az deployment group what-if \
           --resource-group dundermifflin-rg \
           --template-file main.bicep \
-          --result-format FullResourcePayloads \
-          --output json --no-pretty-print > whatif.json
 
       - name: Deploy infra
         if: steps.checkinfra.outputs.changes != '0'
