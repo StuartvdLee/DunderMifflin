@@ -9,6 +9,10 @@ jobs:
   Deploy:
     runs-on: ubuntu-latest
 
+    permissions:
+      id-token: write
+      contents: read
+
     steps:
       - name: Azure Login
         uses: Azure/login@v2.3.0
