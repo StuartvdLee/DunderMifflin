@@ -42,15 +42,6 @@ resource appService 'Microsoft.Web/sites@2024-11-01' = {
   }
 }
 
-resource appServiceSiteConfig 'Microsoft.Web/sites/config@2024-11-01' = {
-  parent: appService
-  name: 'web'
-  properties: {
-    ftpsState: 'FtpsOnly'
-    localMySqlEnabled: false
-  }
-}
-
 resource postgresqlServer 'Microsoft.DBforPostgreSQL/flexibleServers@2024-08-01' = {
   name: '${appName}-psql'
   location: location
