@@ -43,7 +43,7 @@ resource appService 'Microsoft.Web/sites@2024-11-01' = {
 }
 
 resource postgresqlServer 'Microsoft.DBforPostgreSQL/flexibleServers@2024-08-01' = {
-  name: '${appName}-psql'
+  name: appName
   location: location
   sku: {
     name: 'Standard_B1ms'
