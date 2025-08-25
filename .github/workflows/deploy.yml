@@ -45,13 +45,14 @@ jobs:
         id: checkinfra
         working-directory: bicep
         run: |
-          output=
-            $(az deployment group what-if \
+          output=$(
+            az deployment group what-if \
               --resource-group dundermifflin-rg \
               --template-file main.bicep \
               --parameters \
                 postgresqlAdministratorLogin='${{ secrets.POSTGRES_ADMIN_USER }}' \
-                postgresqlAdministratorLoginPassword='${{ secrets.POSTGRES_ADMIN_PASSWORD }}')
+                postgresqlAdministratorLoginPassword='${{ secrets.POSTGRES_ADMIN_PASSWORD }}'
+          )
 
           echo "$output"
 
