@@ -41,30 +41,7 @@ jobs:
             az group create --name $resourceGroupName --location $LOCATION
           fi
 
-      - name: Check infra
-        id: checkinfra
-        working-directory: bicep
-        run: |
-          output=$(
-            az deployment group what-if \
-              --resource-group $resourceGroupName \
-              --template-file main.bicep \
-              --parameters \
-                postgresqlAdministratorLogin='${{ secrets.POSTGRES_ADMIN_USER }}' \
-                postgresqlAdministratorLoginPassword='${{ secrets.POSTGRES_ADMIN_PASSWORD }}'
-          )
-
-          echo "$output"
-
-          if echo "$output" | grep -Eq '^[[:space:]]*[+\-~!]' ; then
-            echo "changes=1" >> "$GITHUB_OUTPUT"
-          else
-            echo "changes=0" >> "$GITHUB_OUTPUT"
-          fi
-
       - name: Deploy infra
-        # Only run this step if there are infra changes
-        if: steps.checkinfra.outputs.changes == '1'
         working-directory: bicep
         run: |
           az deployment group create \
