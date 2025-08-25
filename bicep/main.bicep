@@ -9,7 +9,7 @@ param postgresqlAdministratorLogin string
 
 @description('administratorLoginPassword for PostgreSQL server')
 @secure()
-param administratorLoginPassword string
+param postgresqlAdministratorLoginPassword string
 
 @description('Name of the application')
 param appName string = 'dundermifflin'
@@ -52,7 +52,7 @@ resource postgresqlServer 'Microsoft.DBforPostgreSQL/flexibleServers@2024-08-01'
   }
   properties: {
     administratorLogin: postgresqlAdministratorLogin
-    administratorLoginPassword: administratorLoginPassword
+    administratorLoginPassword: postgresqlAdministratorLoginPassword
     version: '17'
     storage: {
       storageSizeGB: 32
