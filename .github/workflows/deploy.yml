@@ -69,9 +69,11 @@ jobs:
         tenant-id: ${{ secrets.TENANT_ID }}
         subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
 
-    - name: Azure PostgreSQL Action
-      uses: Azure/postgresql@v1.2.0
-      with:
-        server-name: dundermifflin-psql
-        connection-string: ${{ secrets.POSTGRES_CONNECTION_STRING}}
-        plsql-file: database/PostgreSQL/*.sql
+    - name: Create dundermifflin database
+      run: |
+        PGPASSWORD=${{ secrets.POSTGRES_ADMIN_PASSWORD }} psql \
+          -h dundermifflin-psql.postgres.database.azure.com \
+          -U ${{ secrets.POSTGRES_ADMIN_USER }} \
+          -d postgres \
+          -f database/PostgreSQL/00_DunderMifflinCreate.sql \
+          -v sslmode=require
