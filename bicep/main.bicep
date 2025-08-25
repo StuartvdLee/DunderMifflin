@@ -43,7 +43,8 @@ resource appService 'Microsoft.Web/sites@2024-11-01' = {
 }
 
 resource appServiceSiteConfig 'Microsoft.Web/sites/config@2024-11-01' = {
-  name: '${appService.name}-config'
+  parent: appService
+  name: 'web'
   properties: {
     ftpsState: 'FtpsOnly'
     localMySqlEnabled: false
