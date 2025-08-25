@@ -1,5 +1,5 @@
--- Run after 00_DunderMifflinSchema.pgsql
-SET search_path = dunder_mifflin,
+-- Run after 01_DunderMifflinSchema.pgsql
+SET search_path = dundermifflin,
     public;
 
 -- Categories loading
