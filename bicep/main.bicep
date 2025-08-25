@@ -38,8 +38,15 @@ resource appService 'Microsoft.Web/sites@2024-11-01' = {
       appSettings: []
       linuxFxVersion: 'DOTNETCORE|9.0'
       alwaysOn: false
-      ftpsState: 'FtpsOnly'
     }
+  }
+}
+
+resource appServiceSiteConfig 'Microsoft.Web/sites/config@2024-11-01' = {
+  name: '${appService.name}-config'
+  properties: {
+    ftpsState: 'FtpsOnly'
+    localMySqlEnabled: false
   }
 }
 

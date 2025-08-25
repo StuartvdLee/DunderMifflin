@@ -47,7 +47,7 @@ jobs:
         run: |
           output=$(
             az deployment group what-if \
-              --resource-group dundermifflin-rg \
+              --resource-group $resourceGroupName \
               --template-file main.bicep \
               --parameters \
                 postgresqlAdministratorLogin='${{ secrets.POSTGRES_ADMIN_USER }}' \
@@ -95,6 +95,6 @@ jobs:
     - name: Azure PostgreSQL Action
       uses: Azure/postgresql@v1.2.0
       with:
-        server-name: dundermifflin-psql.postgres.database.azure.com
-        connection-string: host=dundermifflin-psql.postgres.database.azure.com port=5432 dbname=postgres user=${{ secrets.POSTGRES_ADMIN_USER }} password=${{ secrets.POSTGRES_ADMIN_PASSWORD }} sslmode=require
+        server-name: "dundermifflin-psql.postgres.database.azure.com"
+        connection-string: "host=dundermifflin-psql.postgres.database.azure.com port=5432 dbname=postgres user=${{ secrets.POSTGRES_ADMIN_USER }} password=${{ secrets.POSTGRES_ADMIN_PASSWORD }} sslmode=require"
         plsql-file: database/PostgreSQL/*.sql
