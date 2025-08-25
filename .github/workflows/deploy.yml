@@ -5,14 +5,71 @@ run-name: Deploy Dunder Mifflin application
 on:
   workflow_dispatch:
 
+env:
+  resourceGroupName: dundermifflin-rg
+
 jobs:
-  Deploy:
+  DeployInfra:
+    name: Deploy infra
     runs-on: ubuntu-latest
+    environment: Dev
+    timeout-minutes: 15
+
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
       - name: Azure Login
         uses: Azure/login@v2.3.0
         with:
           client-id: ${{ secrets.CLIENT_ID }}
           tenant-id: ${{ secrets.TENANT_ID }}
           subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
+
+      - name: Check and create resource group if it doesn't exist
+        run: |
+          LOCATION="westeurope"
+
+          if az group show --name $resourceGroupName &>/dev/null; then
+            echo "Resource group '$resourceGroupName' already exists."
+          else
+            echo "Creating resource group '$resourceGroupName' in $LOCATION..."
+            az group create --name $resourceGroupName --location $LOCATION
+          fi
+
+      - name: Check infra
+        id: checkinfra
+        working-directory: bicep
+        run: |
+          output=$(
+            az deployment group what-if \
+              --resource-group dundermifflin-rg \
+              --template-file main.bicep \
+              --parameters \
+                postgresqlAdministratorLogin='${{ secrets.POSTGRES_ADMIN_USER }}' \
+                postgresqlAdministratorLoginPassword='${{ secrets.POSTGRES_ADMIN_PASSWORD }}'
+          )
+
+          echo "$output"
+
+          if echo "$output" | grep -Eq '^[[:space:]]*[+\-~!]' ; then
+            echo "changes=1" >> "$GITHUB_OUTPUT"
+          else
+            echo "changes=0" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Deploy infra
+        # Only run this step if there are infra changes
+        if: steps.checkinfra.outputs.changes == '1'
+        working-directory: bicep
+        run: |
+          az deployment group create \
+          --resource-group $resourceGroupName \
+          --template-file main.bicep \
+          --parameters \
+            postgresqlAdministratorLogin='${{ secrets.POSTGRES_ADMIN_USER }}' \
+            postgresqlAdministratorLoginPassword='${{ secrets.POSTGRES_ADMIN_PASSWORD }}'
