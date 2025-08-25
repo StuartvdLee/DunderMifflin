@@ -97,4 +97,4 @@ jobs:
       with:
         server-name: dundermifflin-psql.postgres.database.azure.com
         connection-string: host=dundermifflin-psql.postgres.database.azure.com port=5432 dbname=postgres user=${{ secrets.POSTGRES_ADMIN_USER }} password=${{ secrets.POSTGRES_ADMIN_PASSWORD }} sslmode=require
-        plsql-file: /database/PostgreSQL/*.sql
+        plsql-file: database/PostgreSQL/*.sql
