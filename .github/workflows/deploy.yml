@@ -8,16 +8,16 @@ on:
 env:
   resourceGroupName: dundermifflin-rg
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   DeployInfra:
     name: Deploy infra
     runs-on: ubuntu-latest
     environment: Dev
     timeout-minutes: 15
-
-    permissions:
-      id-token: write
-      contents: read
 
     steps:
       - name: Checkout repository
@@ -73,3 +73,28 @@ jobs:
           --parameters \
             postgresqlAdministratorLogin='${{ secrets.POSTGRES_ADMIN_USER }}' \
             postgresqlAdministratorLoginPassword='${{ secrets.POSTGRES_ADMIN_PASSWORD }}'
+
+  DeployDatabase:
+    name: Deploy database
+    runs-on: ubuntu-latest
+    environment: Dev
+    timeout-minutes: 15
+    needs: DeployInfra
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v5
+
+    - name: Azure Login
+      uses: Azure/login@v2.3.0
+      with:
+        client-id: ${{ secrets.CLIENT_ID }}
+        tenant-id: ${{ secrets.TENANT_ID }}
+        subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
+
+    - name: Azure PostgreSQL Action
+      uses: Azure/postgresql@v1.2.0
+      with:
+        server-name: dundermifflin-psql.postgres.database.azure.com
+        connection-string: host=dundermifflin-psql.postgres.database.azure.com port=5432 dbname=postgres user=${{ secrets.POSTGRES_ADMIN_USER }} password=${{ secrets.POSTGRES_ADMIN_PASSWORD }} sslmode=require
+        plsql-file: /database/PostgreSQL/*.sql
