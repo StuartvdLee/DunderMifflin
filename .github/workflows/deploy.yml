@@ -45,12 +45,13 @@ jobs:
         id: checkinfra
         working-directory: bicep
         run: |
-          output="$(az deployment group what-if \
-            --resource-group dundermifflin-rg \
-            --template-file main.bicep) \
-            --parameters \
-              postgresqlAdministratorLogin="${{ secrets.POSTGRES_ADMIN_USER }}" \
-              postgresqlAdministratorLoginPassword="${{ secrets.POSTGRES_ADMIN_PASSWORD }}")"
+          output=
+            $(az deployment group what-if \
+              --resource-group dundermifflin-rg \
+              --template-file main.bicep \
+              --parameters \
+                postgresqlAdministratorLogin='${{ secrets.POSTGRES_ADMIN_USER }}' \
+                postgresqlAdministratorLoginPassword='${{ secrets.POSTGRES_ADMIN_PASSWORD }}')
 
           echo "$output"
 
@@ -67,7 +68,7 @@ jobs:
         run: |
           az deployment group create \
           --resource-group $resourceGroupName \
-          --template-file "main.bicep" \
+          --template-file main.bicep \
           --parameters \
-            postgresqlAdministratorLogin="${{ secrets.POSTGRES_ADMIN_USER }}" \
-            postgresqlAdministratorLoginPassword="${{ secrets.POSTGRES_ADMIN_PASSWORD }}"
+            postgresqlAdministratorLogin='${{ secrets.POSTGRES_ADMIN_USER }}' \
+            postgresqlAdministratorLoginPassword='${{ secrets.POSTGRES_ADMIN_PASSWORD }}'
