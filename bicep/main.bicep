@@ -21,11 +21,19 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2024-11-01' = {
   }
 }
 
-resource webApp 'Microsoft.Web/sites@2024-11-01' = {
+resource appService 'Microsoft.Web/sites@2024-11-01' = {
   name: '${appName}-app-azurefest' // Temp name because dundermifflin-app is being held hostage in another subscription
   location: location
   properties: {
     serverFarmId: appServicePlan.id
+    clientAffinityEnabled: false
+    httpsOnly: true
     publicNetworkAccess: 'Enabled'
+    siteConfig: {
+      appSettings: []
+      linuxFxVersion: 'DOTNETCORE|9.0'
+      alwaysOn: false
+      ftpsState: 'FtpsOnly'
+    }
   }
 }
