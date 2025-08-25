@@ -13,7 +13,7 @@ jobs:
     name: Deploy infra
     runs-on: ubuntu-latest
     environment: Dev
-    timeout-minutes: 5
+    timeout-minutes: 15
 
     permissions:
       id-token: write
@@ -65,3 +65,5 @@ jobs:
           az deployment group create \
           --resource-group $resourceGroupName \
           --template-file "main.bicep"
+          --parameters postgresqlAdministratorLogin='${{ secrets.POSTGRES_ADMIN_USER }}' \
+          administratorLoginPassword='${{ secrets.POSTGRES_ADMIN_PASSWORD }}'
