@@ -10,7 +10,7 @@ on:
     branches: [main]
 
 env:
-  PUBLISH_DIR: 'publish'
+  PUBLISH_DIR: ${{ github.workspace }}/publish
 
 jobs:
   Build:
@@ -41,11 +41,11 @@ jobs:
             --configuration Release \
             --output ${{ env.PUBLISH_DIR }}
           # Zip what App Service expects (folder content)
-          cd ${{ env.PUBLISH_DIR }} && zip -r ../app.zip . && cd -
+          cd ${{ env.PUBLISH_DIR }} && zip -r ../dundermifflin.zip . && cd -
 
       - name: Upload artifact
         if: ${{ github.event_name != 'pull_request' }}
         uses: actions/upload-artifact@v4
         with:
           name: dundermifflin-artifact
-          path: app.zip
+          path: ${{ env.PUBLISH_DIR }}/dundermifflin.zip
