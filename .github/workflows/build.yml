@@ -34,9 +34,10 @@ jobs:
         run: dotnet build --no-restore --configuration Release
 
       - name: Publish
+        working-directory: src/DunderMifflin.Api
         if: ${{ github.event_name != 'pull_request' }}
         run: |
-          dotnet publish ./Your.Api.csproj \
+          dotnet publish ./DunderMifflin.Api.csproj \
             --configuration Release \
             --output ${{ env.PUBLISH_DIR }}
           # Zip what App Service expects (folder content)
