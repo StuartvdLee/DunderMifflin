@@ -15,14 +15,14 @@ jobs:
     name: Deploy app
     runs-on: ubuntu-latest
     environment: Dev
-    timeout-minutes: 15
+    timeout-minutes: 5
 
     steps:
       - name: Download artifact
         uses: dawidd6/action-download-artifact@v6
         with:
           workflow: build.yml
-          branch: feature/deploy-app # temporary while testing
+          branch: main
           workflow_conclusion: success
           path: artifact
 
