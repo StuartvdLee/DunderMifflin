@@ -23,7 +23,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
-      - name: Azure Login
+      - name: Azure login
         uses: Azure/login@v2.3.0
         with:
           client-id: ${{ secrets.CLIENT_ID }}
@@ -62,7 +62,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v5
 
-    - name: Azure Login
+    - name: Azure login
       uses: Azure/login@v2.3.0
       with:
         client-id: ${{ secrets.CLIENT_ID }}

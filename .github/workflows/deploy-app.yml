@@ -5,9 +5,6 @@ run-name: Deploy Dunder Mifflin application
 on:
   workflow_dispatch:
 
-env:
-  resourceGroupName: dundermifflin-rg
-
 permissions:
   id-token: write
   contents: read
@@ -21,19 +18,25 @@ jobs:
     timeout-minutes: 15
 
     steps:
-      - uses: dawidd6/action-download-artifact@v6
+      - name: Download artifact
+        uses: dawidd6/action-download-artifact@v6
         with:
           workflow: build.yml
           branch: feature/deploy-app # temporary while testing
           name: dundermifflin-artifact
           workflow_conclusion: success
           skip_unpack: true
+          path: artifact
 
-      - name: Azure Login
+      - name: Azure login
         uses: Azure/login@v2.3.0
         with:
           client-id: ${{ secrets.CLIENT_ID }}
           tenant-id: ${{ secrets.TENANT_ID }}
           subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
 
-      
+      - name: Deploy app
+        uses: Azure/webapps-deploy@v2.2.17
+        with:
+          app-name: dundermifflin-app-azurefest # Temp name because dundermifflin-app is being held hostage in another subscription
+          package: artifact/dundermifflin-artifact.zip
