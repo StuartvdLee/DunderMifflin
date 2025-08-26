@@ -41,7 +41,7 @@ jobs:
             --configuration Release \
             --output ${{ env.PUBLISH_DIR }}
           # Zip what App Service expects (folder content)
-          cd ${{ env.PUBLISH_DIR }} && zip -r ../dundermifflin.zip . && cd -
+          cd ${{ env.PUBLISH_DIR }} && zip -r dundermifflin.zip . && cd -
 
       - name: Upload artifact
         if: ${{ github.event_name != 'pull_request' }}
