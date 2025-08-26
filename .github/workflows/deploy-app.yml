@@ -26,6 +26,7 @@ jobs:
           name: dundermifflin-artifact
           workflow_conclusion: success
           path: artifact
+          skip_unpack: true
 
       - name: Azure login
         uses: Azure/login@v2.3.0
