@@ -11,6 +11,10 @@ param postgresqlAdministratorLogin string
 @secure()
 param postgresqlAdministratorLoginPassword string
 
+@description('administratorLoginPassword for PostgreSQL server')
+@secure()
+param postgresqlDunderMifflinConnectionString string
+
 @description('Name of the application')
 param appName string = 'dundermifflin'
 
@@ -35,10 +39,17 @@ resource appService 'Microsoft.Web/sites@2024-11-01' = {
     httpsOnly: true
     publicNetworkAccess: 'Enabled'
     siteConfig: {
-      appSettings: []
       linuxFxVersion: 'DOTNETCORE|9.0'
       alwaysOn: false
     }
+  }
+}
+
+resource appServiceAppSettings 'Microsoft.Web/sites/config@2024-11-01' = {
+  name: 'appsettings'
+  parent: appService
+  properties: {
+    ConnectionStrings__DefaultConnection: postgresqlDunderMifflinConnectionString
   }
 }
 

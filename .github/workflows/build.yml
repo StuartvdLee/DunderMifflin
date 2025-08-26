@@ -9,9 +9,13 @@ on:
   pull_request:
     branches: [main]
 
+env:
+  PUBLISH_DIR: ${{ github.workspace }}/publish
+
 jobs:
   Build:
     runs-on: ubuntu-latest
+    timeout-minutes: 2
 
     steps:
       - name: Checkout repository
@@ -29,3 +33,20 @@ jobs:
       - name: Build
         working-directory: src
         run: dotnet build --no-restore --configuration Release
+
+      - name: Publish
+        working-directory: src/DunderMifflin.Api
+        if: ${{ github.event_name != 'pull_request' }}
+        run: |
+          dotnet publish ./DunderMifflin.Api.csproj \
+            --configuration Release \
+            --output ${{ env.PUBLISH_DIR }}
+          # Zip what App Service expects (folder content)
+          cd ${{ env.PUBLISH_DIR }} && zip -r dundermifflin.zip . && cd -
+
+      - name: Upload artifact
+        if: ${{ github.event_name != 'pull_request' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: dundermifflin-artifact
+          path: ${{ env.PUBLISH_DIR }}/dundermifflin.zip

@@ -5,27 +5,37 @@ run-name: Deploy Dunder Mifflin application
 on:
   workflow_dispatch:
 
-env:
-  resourceGroupName: dundermifflin-rg
-
 permissions:
   id-token: write
   contents: read
+  actions: read
 
 jobs:
   DeployApp:
     name: Deploy app
     runs-on: ubuntu-latest
     environment: Dev
-    timeout-minutes: 15
+    timeout-minutes: 5
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
+      - name: Download artifact
+        uses: dawidd6/action-download-artifact@v6
+        with:
+          workflow: build.yml
+          branch: main
+          workflow_conclusion: success
+          path: artifact
 
-      - name: Azure Login
+      - name: Azure login
         uses: Azure/login@v2.3.0
         with:
           client-id: ${{ secrets.CLIENT_ID }}
           tenant-id: ${{ secrets.TENANT_ID }}
           subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
+
+      - name: Deploy app
+        uses: Azure/webapps-deploy@v3.0.6
+        with:
+          app-name: dundermifflin-app-azurefest # Temp name because dundermifflin-app is being held hostage in another subscription
+          package: artifact/dundermifflin-artifact/dundermifflin.zip
+

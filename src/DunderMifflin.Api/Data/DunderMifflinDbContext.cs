@@ -38,7 +38,7 @@ public partial class DunderMifflinDbContext : DbContext
         {
             entity.HasKey(e => e.Categoryid).HasName("categories_pkey");
 
-            entity.ToTable("categories", "dunder_mifflin");
+            entity.ToTable("categories", "dundermifflin");
 
             entity.Property(e => e.Categoryid).HasColumnName("categoryid");
             entity.Property(e => e.Categoryname)
@@ -56,7 +56,7 @@ public partial class DunderMifflinDbContext : DbContext
         {
             entity.HasKey(e => e.Customerid).HasName("customers_pkey");
 
-            entity.ToTable("customers", "dunder_mifflin");
+            entity.ToTable("customers", "dundermifflin");
 
             entity.HasIndex(e => e.Customercode, "customers_customercode_key").IsUnique();
 
@@ -97,7 +97,7 @@ public partial class DunderMifflinDbContext : DbContext
         {
             entity.HasKey(e => e.Employeeid).HasName("employees_pkey");
 
-            entity.ToTable("employees", "dunder_mifflin");
+            entity.ToTable("employees", "dundermifflin");
 
             entity.Property(e => e.Employeeid).HasColumnName("employeeid");
             entity.Property(e => e.Address)
@@ -167,7 +167,7 @@ public partial class DunderMifflinDbContext : DbContext
         {
             entity.HasKey(e => e.Statusid).HasName("employeestatus_pkey");
 
-            entity.ToTable("employeestatus", "dunder_mifflin");
+            entity.ToTable("employeestatus", "dundermifflin");
 
             entity.HasIndex(e => e.Statuscode, "employeestatus_statuscode_key").IsUnique();
 
@@ -184,7 +184,7 @@ public partial class DunderMifflinDbContext : DbContext
         {
             entity.HasKey(e => e.Orderid).HasName("orders_pkey");
 
-            entity.ToTable("orders", "dunder_mifflin");
+            entity.ToTable("orders", "dundermifflin");
 
             entity.HasIndex(e => e.Customerid, "idx_orders_customer");
 
@@ -241,7 +241,7 @@ public partial class DunderMifflinDbContext : DbContext
         {
             entity.HasKey(e => new { e.Orderid, e.Productid }).HasName("orderdetails_pkey");
 
-            entity.ToTable("orderdetails", "dunder_mifflin");
+            entity.ToTable("orderdetails", "dundermifflin");
 
             entity.HasIndex(e => e.Productid, "idx_orderdetails_prod");
 
@@ -273,7 +273,7 @@ public partial class DunderMifflinDbContext : DbContext
         {
             entity.HasKey(e => e.Productid).HasName("products_pkey");
 
-            entity.ToTable("products", "dunder_mifflin");
+            entity.ToTable("products", "dundermifflin");
 
             entity.HasIndex(e => e.Categoryid, "idx_products_cat");
 
@@ -316,7 +316,7 @@ public partial class DunderMifflinDbContext : DbContext
         {
             entity.HasKey(e => e.Regionid).HasName("regions_pkey");
 
-            entity.ToTable("regions", "dunder_mifflin");
+            entity.ToTable("regions", "dundermifflin");
 
             entity.Property(e => e.Regionid).HasColumnName("regionid");
             entity.Property(e => e.Isactive)
@@ -331,7 +331,7 @@ public partial class DunderMifflinDbContext : DbContext
         {
             entity.HasKey(e => e.Shipperid).HasName("shippers_pkey");
 
-            entity.ToTable("shippers", "dunder_mifflin");
+            entity.ToTable("shippers", "dundermifflin");
 
             entity.Property(e => e.Shipperid).HasColumnName("shipperid");
             entity.Property(e => e.Companyname)
@@ -346,7 +346,7 @@ public partial class DunderMifflinDbContext : DbContext
         {
             entity.HasKey(e => e.Supplierid).HasName("suppliers_pkey");
 
-            entity.ToTable("suppliers", "dunder_mifflin");
+            entity.ToTable("suppliers", "dundermifflin");
 
             entity.Property(e => e.Supplierid).HasColumnName("supplierid");
             entity.Property(e => e.Address)

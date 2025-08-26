@@ -17,13 +17,13 @@ jobs:
     name: Deploy infra
     runs-on: ubuntu-latest
     environment: Dev
-    timeout-minutes: 15
+    timeout-minutes: 10
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
 
-      - name: Azure Login
+      - name: Azure login
         uses: Azure/login@v2.3.0
         with:
           client-id: ${{ secrets.CLIENT_ID }}
@@ -49,20 +49,21 @@ jobs:
           --template-file main.bicep \
           --parameters \
             postgresqlAdministratorLogin='${{ secrets.POSTGRES_ADMIN_USER }}' \
-            postgresqlAdministratorLoginPassword='${{ secrets.POSTGRES_ADMIN_PASSWORD }}'
+            postgresqlAdministratorLoginPassword='${{ secrets.POSTGRES_ADMIN_PASSWORD }}' \
+            postgresqlDunderMifflinConnectionString='${{ secrets.POSTGRES_CONNECTION_STRING_DUNDERMIFFLIN }}'
 
   DeployDatabase:
     name: Deploy database
     runs-on: ubuntu-latest
     environment: Dev
-    timeout-minutes: 15
+    timeout-minutes: 10
     needs: DeployInfra
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v5
 
-    - name: Azure Login
+    - name: Azure login
       uses: Azure/login@v2.3.0
       with:
         client-id: ${{ secrets.CLIENT_ID }}
