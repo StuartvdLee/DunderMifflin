@@ -23,21 +23,19 @@ jobs:
         with:
           workflow: build.yml
           branch: feature/deploy-app # temporary while testing
-          name: dundermifflin-artifact
           workflow_conclusion: success
           path: artifact
-          skip_unpack: true
 
-      - name: Azure login
-        uses: Azure/login@v2.3.0
-        with:
-          client-id: ${{ secrets.CLIENT_ID }}
-          tenant-id: ${{ secrets.TENANT_ID }}
-          subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
+      # - name: Azure login
+      #   uses: Azure/login@v2.3.0
+      #   with:
+      #     client-id: ${{ secrets.CLIENT_ID }}
+      #     tenant-id: ${{ secrets.TENANT_ID }}
+      #     subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
 
-      - name: Deploy app
-        uses: Azure/webapps-deploy@v3.0.6
-        with:
-          app-name: dundermifflin-app-azurefest # Temp name because dundermifflin-app is being held hostage in another subscription
-          package: artifact/dundermifflin-artifact/dundermifflin.zip
+      # - name: Deploy app
+      #   uses: Azure/webapps-deploy@v3.0.6
+      #   with:
+      #     app-name: dundermifflin-app-azurefest # Temp name because dundermifflin-app is being held hostage in another subscription
+      #     package: artifact/dundermifflin-artifact/dundermifflin.zip
 
