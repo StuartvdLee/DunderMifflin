@@ -25,7 +25,7 @@ jobs:
         with:
           workflow: build.yml
           branch: feature/deploy-app # temporary while testing
-          name: webapp-package
+          name: dundermifflin-artifact
           workflow_conclusion: success
       
       - name: Azure Login
