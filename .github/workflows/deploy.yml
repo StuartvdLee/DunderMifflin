@@ -13,50 +13,50 @@ permissions:
   contents: read
 
 jobs:
-  DeployInfra:
-    name: Deploy infra
-    runs-on: ubuntu-latest
-    environment: Dev
-    timeout-minutes: 15
+  # DeployInfra:
+  #   name: Deploy infra
+  #   runs-on: ubuntu-latest
+  #   environment: Dev
+  #   timeout-minutes: 15
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v5
 
-      - name: Azure Login
-        uses: Azure/login@v2.3.0
-        with:
-          client-id: ${{ secrets.CLIENT_ID }}
-          tenant-id: ${{ secrets.TENANT_ID }}
-          subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
+  #     - name: Azure Login
+  #       uses: Azure/login@v2.3.0
+  #       with:
+  #         client-id: ${{ secrets.CLIENT_ID }}
+  #         tenant-id: ${{ secrets.TENANT_ID }}
+  #         subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
 
-      - name: Check and create resource group if it doesn't exist
-        run: |
-          LOCATION="westeurope"
+  #     - name: Check and create resource group if it doesn't exist
+  #       run: |
+  #         LOCATION="westeurope"
 
-          if az group show --name $resourceGroupName &>/dev/null; then
-            echo "Resource group '$resourceGroupName' already exists."
-          else
-            echo "Creating resource group '$resourceGroupName' in $LOCATION..."
-            az group create --name $resourceGroupName --location $LOCATION
-          fi
+  #         if az group show --name $resourceGroupName &>/dev/null; then
+  #           echo "Resource group '$resourceGroupName' already exists."
+  #         else
+  #           echo "Creating resource group '$resourceGroupName' in $LOCATION..."
+  #           az group create --name $resourceGroupName --location $LOCATION
+  #         fi
 
-      - name: Deploy infra
-        working-directory: bicep
-        run: |
-          az deployment group create \
-          --resource-group $resourceGroupName \
-          --template-file main.bicep \
-          --parameters \
-            postgresqlAdministratorLogin='${{ secrets.POSTGRES_ADMIN_USER }}' \
-            postgresqlAdministratorLoginPassword='${{ secrets.POSTGRES_ADMIN_PASSWORD }}'
+  #     - name: Deploy infra
+  #       working-directory: bicep
+  #       run: |
+  #         az deployment group create \
+  #         --resource-group $resourceGroupName \
+  #         --template-file main.bicep \
+  #         --parameters \
+  #           postgresqlAdministratorLogin='${{ secrets.POSTGRES_ADMIN_USER }}' \
+  #           postgresqlAdministratorLoginPassword='${{ secrets.POSTGRES_ADMIN_PASSWORD }}'
 
   DeployDatabase:
     name: Deploy database
     runs-on: ubuntu-latest
     environment: Dev
     timeout-minutes: 15
-    needs: DeployInfra
+    # needs: DeployInfra
 
     steps:
     - name: Checkout repository
