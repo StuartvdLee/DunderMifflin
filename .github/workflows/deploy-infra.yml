@@ -49,7 +49,7 @@ jobs:
           --template-file main.bicep \
           --parameters \
             postgresqlAdministratorLogin='${{ secrets.POSTGRES_ADMIN_USER }}' \
-            postgresqlAdministratorLoginPassword='${{ secrets.POSTGRES_ADMIN_PASSWORD }}'
+            postgresqlAdministratorLoginPassword='${{ secrets.POSTGRES_ADMIN_PASSWORD }}' \
             postgresqlDunderMifflinConnectionString='${{ secrets.POSTGRES_CONNECTION_STRING_DUNDERMIFFLIN }}'
 
   DeployDatabase:
