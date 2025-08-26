@@ -27,10 +27,13 @@ jobs:
           branch: feature/deploy-app # temporary while testing
           name: dundermifflin-artifact
           workflow_conclusion: success
-      
+          skip_unpack: true
+
       - name: Azure Login
         uses: Azure/login@v2.3.0
         with:
           client-id: ${{ secrets.CLIENT_ID }}
           tenant-id: ${{ secrets.TENANT_ID }}
           subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
+
+      
