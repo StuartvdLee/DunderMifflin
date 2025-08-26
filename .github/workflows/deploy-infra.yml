@@ -1,6 +1,6 @@
-name: Deploy Dunder Mifflin application
+name: Deploy Dunder Mifflin infrastructure
 
-run-name: Deploy Dunder Mifflin application
+run-name: Deploy Dunder Mifflin infrastructure
 
 on:
   workflow_dispatch:
