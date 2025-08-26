@@ -39,7 +39,6 @@ resource appService 'Microsoft.Web/sites@2024-11-01' = {
     httpsOnly: true
     publicNetworkAccess: 'Enabled'
     siteConfig: {
-      appSettings: []
       linuxFxVersion: 'DOTNETCORE|9.0'
       alwaysOn: false
     }
