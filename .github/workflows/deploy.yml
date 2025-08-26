@@ -8,16 +8,16 @@ on:
 env:
   resourceGroupName: dundermifflin-rg
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   DeployInfra:
     name: Deploy infra
     runs-on: ubuntu-latest
     environment: Dev
     timeout-minutes: 15
-
-    permissions:
-      id-token: write
-      contents: read
 
     steps:
       - name: Checkout repository
@@ -41,30 +41,7 @@ jobs:
             az group create --name $resourceGroupName --location $LOCATION
           fi
 
-      - name: Check infra
-        id: checkinfra
-        working-directory: bicep
-        run: |
-          output=$(
-            az deployment group what-if \
-              --resource-group dundermifflin-rg \
-              --template-file main.bicep \
-              --parameters \
-                postgresqlAdministratorLogin='${{ secrets.POSTGRES_ADMIN_USER }}' \
-                postgresqlAdministratorLoginPassword='${{ secrets.POSTGRES_ADMIN_PASSWORD }}'
-          )
-
-          echo "$output"
-
-          if echo "$output" | grep -Eq '^[[:space:]]*[+\-~!]' ; then
-            echo "changes=1" >> "$GITHUB_OUTPUT"
-          else
-            echo "changes=0" >> "$GITHUB_OUTPUT"
-          fi
-
       - name: Deploy infra
-        # Only run this step if there are infra changes
-        if: steps.checkinfra.outputs.changes == '1'
         working-directory: bicep
         run: |
           az deployment group create \
@@ -73,3 +50,36 @@ jobs:
           --parameters \
             postgresqlAdministratorLogin='${{ secrets.POSTGRES_ADMIN_USER }}' \
             postgresqlAdministratorLoginPassword='${{ secrets.POSTGRES_ADMIN_PASSWORD }}'
+
+  DeployDatabase:
+    name: Deploy database
+    runs-on: ubuntu-latest
+    environment: Dev
+    timeout-minutes: 15
+    needs: DeployInfra
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v5
+
+    - name: Azure Login
+      uses: Azure/login@v2.3.0
+      with:
+        client-id: ${{ secrets.CLIENT_ID }}
+        tenant-id: ${{ secrets.TENANT_ID }}
+        subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
+
+    # Create and populate are split up because we need to switch database after creation
+    - name: Create database
+      uses: Azure/postgresql@v1.2.0
+      with:
+        server-name: dundermifflin.postgres.database.azure.com
+        connection-string: ${{ secrets.POSTGRES_CONNECTION_STRING}}
+        plsql-file: database/PostgreSQL/00_DunderMifflinCreate.sql
+
+    - name: Populate database
+      uses: Azure/postgresql@v1.2.0
+      with:
+        server-name: dundermifflin.postgres.database.azure.com
+        connection-string: ${{ secrets.POSTGRES_CONNECTION_STRING_DUNDERMIFFLIN}}
+        plsql-file: database/PostgreSQL/Bootstrap/*.sql
