@@ -46,9 +46,20 @@ resource appService 'Microsoft.Web/sites@2024-11-01' = {
   }
 }
 
+resource appServiceAppSettings 'Microsoft.Web/sites/config@2024-11-01' = {
+  name: 'appsettings'
+  parent: appService
+  properties: {
+    ConnectionStrings__DefaultConnection: postgresqlDunderMifflinConnectionString
+  }
+}
+
 resource postgresqlServer 'Microsoft.DBforPostgreSQL/flexibleServers@2024-08-01' = {
   name: appName
   location: location
+  dependsOn: [
+    appServiceAppSettings // This is done so Azure doesn't throw 429 errors during deployment
+  ]
   sku: {
     name: 'Standard_B1ms'
     tier: 'Burstable'
@@ -69,13 +80,5 @@ resource postgresqlServer 'Microsoft.DBforPostgreSQL/flexibleServers@2024-08-01'
     highAvailability: {
       mode: 'Disabled'
     }
-  }
-}
-
-resource appServiceAppSettings 'Microsoft.Web/sites/config@2024-11-01' = {
-  name: 'appsettings'
-  parent: appService
-  properties: {
-    ConnectionStrings__DefaultConnection: postgresqlDunderMifflinConnectionString
   }
 }
