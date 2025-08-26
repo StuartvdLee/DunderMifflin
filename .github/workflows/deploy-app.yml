@@ -11,6 +11,7 @@ env:
 permissions:
   id-token: write
   contents: read
+  actions: read
 
 jobs:
   DeployApp:
@@ -20,9 +21,13 @@ jobs:
     timeout-minutes: 15
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
-
+      - uses: dawidd6/action-download-artifact@v6
+        with:
+          workflow: build.yml
+          branch: feature/deploy-app # temporary while testing
+          name: webapp-package
+          workflow_conclusion: success
+      
       - name: Azure Login
         uses: Azure/login@v2.3.0
         with:
