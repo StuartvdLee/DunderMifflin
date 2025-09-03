@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace DunderMifflin.Api.Models;
 
-namespace DunderMifflin.Api.Models;
-
-public partial class Employeestatus
+public class Employeestatus
 {
     public int Statusid { get; set; }
 

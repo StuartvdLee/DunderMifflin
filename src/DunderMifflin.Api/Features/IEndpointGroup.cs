@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Routing;
-
 namespace DunderMifflin.Api.Features;
 
 public interface IEndpointGroup

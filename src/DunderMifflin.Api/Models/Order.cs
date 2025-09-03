@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace DunderMifflin.Api.Models;
 
-namespace DunderMifflin.Api.Models;
-
-public partial class Order
+public class Order
 {
     public int Orderid { get; set; }
 

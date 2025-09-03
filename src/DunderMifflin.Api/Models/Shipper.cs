@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace DunderMifflin.Api.Models;
 
-namespace DunderMifflin.Api.Models;
-
-public partial class Shipper
+public class Shipper
 {
     public int Shipperid { get; set; }
 
