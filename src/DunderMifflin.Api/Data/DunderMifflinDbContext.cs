@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using DunderMifflin.Api.Models;
+﻿using DunderMifflin.Api.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DunderMifflin.Api.Data;

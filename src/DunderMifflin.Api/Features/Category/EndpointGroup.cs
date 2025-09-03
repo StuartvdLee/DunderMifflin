@@ -1,7 +1,4 @@
 using DunderMifflin.Api.Data;
-using DunderMifflin.Api.Features;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 
 namespace DunderMifflin.Api.Features.Category;
@@ -16,8 +13,8 @@ public class EndpointGroup : IEndpointGroup
             await db.Categories.ToListAsync());
 
         group.MapGet("/{id:int}", async (int id, DunderMifflinDbContext db) =>
-            await db.Categories.FindAsync(id) is var c && c !=null
-            ? Results.Ok(c)
-            : Results.NotFound());
+            await db.Categories.FindAsync(id) is var c && c != null
+                ? Results.Ok(c)
+                : Results.NotFound());
     }
 }
