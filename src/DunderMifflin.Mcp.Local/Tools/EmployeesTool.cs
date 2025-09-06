@@ -1,6 +1,4 @@
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Text.Json.Serialization;
 using DunderMifflin.Api.Data;
 using DunderMifflin.Api.Models;
 using Microsoft.EntityFrameworkCore;
@@ -12,19 +10,14 @@ namespace DunderMifflin.Mcp.Local.Tools;
 public static class EmployeesTool
 {
     [McpServerTool(Name = "GetEmployees")]
-    [Description("Gets a list of Dunder Mifflin employees.")]
-    public static async Task <List<Employee>> GetEmployees(DunderMifflinDbContext dbContext)
+    [Description(
+        "Gets a list of Dunder Mifflin employees. Optionally takes a limit of the number of employees to return.")]
+    public static async Task<List<Employee>> GetEmployees(DunderMifflinDbContext dbContext, int? limit = null)
     {
-        // Debugger.Launch();
-        Console.WriteLine($"GetEmployees was called");
-        
-        return await dbContext.Employees.ToListAsync();
+        var query = dbContext.Employees.AsQueryable();
 
-        // var employees = new List<Employee>
-        // {
-        //     new Employee() { Employeeid = 1, Lastname = "van der Lee", Firstname = "Stuart" }
-        // };
-        //
-        // return employees;
+        if (limit is > 0) query = query.Take(limit.Value);
+
+        return await query.ToListAsync();
     }
 }

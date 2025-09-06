@@ -8,9 +8,9 @@ namespace DunderMifflin.Mcp.Local.Prompts;
 public class EmployeesPrompt
 {
     [McpServerPrompt]
-    [Description("Prompt to get a list of employees.")]
-    public ChatMessage GetEmployees()
+    [Description("Prompt to get a list of Dunder Mifflin employees with a maximum limit.")]
+    public ChatMessage GetEmployees([Description("Employee limit")] int limit)
     {
-        return new ChatMessage(ChatRole.User, "Get a list of all Dunder Mifflin employees");
+        return new ChatMessage(ChatRole.User, $"Get a list of {limit} Dunder Mifflin employees");
     }
 }
