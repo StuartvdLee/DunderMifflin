@@ -18,8 +18,8 @@ param postgresqlDunderMifflinConnectionString string
 @description('Name of the application')
 param appName string = 'dundermifflin'
 
-resource appServicePlan 'Microsoft.Web/serverfarms@2024-11-01' = {
-  name: '${appName}-asp'
+resource apiAppServicePlan 'Microsoft.Web/serverfarms@2024-11-01' = {
+  name: '${appName}-api-asp'
   location: location
   kind: 'linux'
   sku: {
@@ -30,11 +30,23 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2024-11-01' = {
   }
 }
 
-resource appService 'Microsoft.Web/sites@2024-11-01' = {
-  name: '${appName}-app-azurefest' // Temp name because dundermifflin-app is being held hostage in another subscription
+resource mcpAppServicePlan 'Microsoft.Web/serverfarms@2024-11-01' = {
+  name: '${appName}-mcp-asp'
+  location: location
+  kind: 'linux'
+  sku: {
+    name: 'F1' // Free tier
+  }
+  properties: {
+    reserved: true // For Linux
+  }
+}
+
+resource apiAppService 'Microsoft.Web/sites@2024-11-01' = {
+  name: '${appName}-api'
   location: location
   properties: {
-    serverFarmId: appServicePlan.id
+    serverFarmId: apiAppServicePlan.id
     clientAffinityEnabled: false
     httpsOnly: true
     publicNetworkAccess: 'Enabled'
@@ -45,9 +57,24 @@ resource appService 'Microsoft.Web/sites@2024-11-01' = {
   }
 }
 
-resource appServiceAppSettings 'Microsoft.Web/sites/config@2024-11-01' = {
+resource mcpAppService 'Microsoft.Web/sites@2024-11-01' = {
+  name: '${appName}-mcp'
+  location: location
+  properties: {
+    serverFarmId: mcpAppServicePlan.id
+    clientAffinityEnabled: false
+    httpsOnly: true
+    publicNetworkAccess: 'Enabled'
+    siteConfig: {
+      linuxFxVersion: 'DOTNETCORE|9.0'
+      alwaysOn: false
+    }
+  }
+}
+
+resource apiAppServiceAppSettings 'Microsoft.Web/sites/config@2024-11-01' = {
   name: 'appsettings'
-  parent: appService
+  parent: apiAppService
   properties: {
     ConnectionStrings__DefaultConnection: postgresqlDunderMifflinConnectionString
   }

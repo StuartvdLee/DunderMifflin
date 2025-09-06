@@ -37,6 +37,6 @@ jobs:
       - name: Deploy remote MCP server
         uses: Azure/webapps-deploy@v3.0.6
         with:
-          app-name: dundermifflin-app-azurefest # Temp name because dundermifflin-app is being held hostage in another subscription
-          package: artifact/dundermifflin.mcp.zip
+          app-name: dundermifflin-mcp
+          package: artifact/dundermifflin-mcp-artifact/dundermifflin.mcp.zip
 

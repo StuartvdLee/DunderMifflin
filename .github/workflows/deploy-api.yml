@@ -1,6 +1,6 @@
-name: Deploy Dunder Mifflin application
+name: Deploy Dunder Mifflin API
 
-run-name: Deploy Dunder Mifflin application
+run-name: Deploy Dunder Mifflin API
 
 on:
   workflow_dispatch:
@@ -11,8 +11,8 @@ permissions:
   actions: read
 
 jobs:
-  DeployApp:
-    name: Deploy app
+  DeployApi:
+    name: Deploy API
     runs-on: ubuntu-latest
     environment: Dev
     timeout-minutes: 5
@@ -34,9 +34,8 @@ jobs:
           tenant-id: ${{ secrets.TENANT_ID }}
           subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
 
-      - name: Deploy app
+      - name: Deploy API
         uses: Azure/webapps-deploy@v3.0.6
         with:
-          app-name: dundermifflin-app-azurefest # Temp name because dundermifflin-app is being held hostage in another subscription
+          app-name: dundermifflin-api
           package: artifact/dundermifflin-api-artifact/dundermifflin.api.zip
-
