@@ -34,7 +34,7 @@ jobs:
         working-directory: src
         run: dotnet build --no-restore --configuration Release
 
-      - name: Publish Dunder Mifflin API
+      - name: Publish API
         working-directory: src/DunderMifflin.Api
         if: ${{ github.event_name != 'pull_request' }}
         run: |
@@ -44,7 +44,7 @@ jobs:
           # Zip what App Service expects (folder content)
           cd ${{ env.PUBLISH_DIR }}/api && zip -r dundermifflin.api.zip . && cd -
 
-      - name: Publish Dunder Mifflin Remote MCP Server
+      - name: Publish Remote MCP Server
         working-directory: src/DunderMifflin.Mcp.Remote
         if: ${{ github.event_name != 'pull_request' }}
         run: |
@@ -55,14 +55,14 @@ jobs:
           # Zip what App Service expects (folder content)
           cd ${{ env.PUBLISH_DIR }}/mcp && zip -r dundermifflin.mcp.zip . && cd -
 
-      - name: Upload Dunder Mifflin API artifact
+      - name: Upload API artifact
         if: ${{ github.event_name != 'pull_request' }}
         uses: actions/upload-artifact@v4
         with:
           name: dundermifflin-api-artifact
           path: ${{ env.PUBLISH_DIR }}/api/dundermifflin.api.zip
 
-      - name: Upload Dunder Mifflin Remote MCP Server artifact
+      - name: Upload Remote MCP Server artifact
         if: ${{ github.event_name != 'pull_request' }}
         uses: actions/upload-artifact@v4
         with:
