@@ -21,11 +21,18 @@
         <ProjectReference Include="..\DunderMifflin.Api\DunderMifflin.Api.csproj"/>
     </ItemGroup>
 
-    <Target Name="RemoveDuplicateAppsettings" BeforeTargets="ResolvePublishFiles">
+    <Target Name="RemoveDuplicateAppsettings" AfterTargets="ResolveFilesToPublish">
         <ItemGroup>
+            <!-- Remove appsettings.json coming from referenced projects -->
             <ResolvedFileToPublish Remove="@(ResolvedFileToPublish)"
             Condition=" '%(ResolvedFileToPublish.RelativePath)' == 'appsettings.json'
-                    and '%(ResolvedFileToPublish.Identity)' != '$(MSBuildProjectDirectory)/appsettings.json' " />
+                    and '%(ResolvedFileToPublish.SourceProjectFile)' != '$(MSBuildProjectFullPath)' " />
+            <!-- Remove env-specific appsettings from referenced projects as well -->
+            <ResolvedFileToPublish Remove="@(ResolvedFileToPublish)"
+            Condition=" $([System.String]::Copy('%(ResolvedFileToPublish.RelativePath)')).StartsWith('appsettings.', System.StringComparison.OrdinalIgnoreCase)
+                    and $([System.String]::Copy('%(ResolvedFileToPublish.RelativePath)')).EndsWith('.json', System.StringComparison.OrdinalIgnoreCase)
+                    and '%(ResolvedFileToPublish.SourceProjectFile)' != '$(MSBuildProjectFullPath)' " />
         </ItemGroup>
     </Target>
+
 </Project>
