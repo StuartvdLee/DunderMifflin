@@ -36,6 +36,6 @@ jobs:
       - name: Deploy API
         uses: Azure/webapps-deploy@v3.0.6
         with:
-          app-name: dundermifflin-app-azurefest # Temp name because dundermifflin-app is being held hostage in another subscription
+          app-name: dundermifflin-api
           package: artifact/dundermifflin-artifact/dundermifflin.zip
 
