@@ -50,6 +50,7 @@ jobs:
         run: |
           dotnet publish ./DunderMifflin.Mcp.Remote.csproj \
             --configuration Release \
+            /p:ErrorOnDuplicatePublishOutputFiles=false \
             --output ${{ env.PUBLISH_DIR }}/mcp
           # Zip what App Service expects (folder content)
           cd ${{ env.PUBLISH_DIR }}/mcp && zip -r dundermifflin.mcp.zip . && cd -
