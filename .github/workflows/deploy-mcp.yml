@@ -1,0 +1,42 @@
+name: Deploy Dunder Mifflin application
+
+run-name: Deploy Dunder Mifflin application
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+  actions: read
+
+jobs:
+  DeployApp:
+    name: Deploy app
+    runs-on: ubuntu-latest
+    environment: Dev
+    timeout-minutes: 5
+
+    steps:
+      - name: Download Dunder Mifflin MCP artifact
+        uses: dawidd6/action-download-artifact@v6
+        with:
+          workflow: build.yml
+          branch: main
+          workflow_conclusion: success
+          path: artifact
+          name: dundermifflin-mcp-artifact
+
+      - name: Azure login
+        uses: Azure/login@v2.3.0
+        with:
+          client-id: ${{ secrets.CLIENT_ID }}
+          tenant-id: ${{ secrets.TENANT_ID }}
+          subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
+
+      - name: Deploy app
+        uses: Azure/webapps-deploy@v3.0.6
+        with:
+          app-name: dundermifflin-app-azurefest # Temp name because dundermifflin-app is being held hostage in another subscription
+          package: artifact/dundermifflin-mcp-artifact/dundermifflin.mcp.zip
+
