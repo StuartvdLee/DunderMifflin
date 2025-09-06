@@ -49,11 +49,7 @@ public class Employee
 
     public string? Statuscode { get; set; }
 
-    // public virtual ICollection<Employee> InverseReportstoNavigation { get; set; } = new List<Employee>();
-
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
-
-    // public virtual Employee? ReportstoNavigation { get; set; }
 
     public virtual Employeestatus? StatuscodeNavigation { get; set; }
 }
