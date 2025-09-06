@@ -22,12 +22,10 @@
     </ItemGroup>
 
     <Target Name="RemoveDuplicateAppsettings" BeforeTargets="ResolvePublishFiles">
-    <ItemGroup>
-        <ResolvedFileToPublish Remove="@(ResolvedFileToPublish)"
-        Condition=" '%(ResolvedFileToPublish.RelativePath)' == 'appsettings.json'
-                and '%(ResolvedFileToPublish.SourceProjectFile)' != '$(MSBuildProjectFullPath)' " />
-    </ItemGroup>
+        <ItemGroup>
+            <ResolvedFileToPublish Remove="@(ResolvedFileToPublish)"
+            Condition=" '%(ResolvedFileToPublish.RelativePath)' == 'appsettings.json'
+                    and '%(ResolvedFileToPublish.Identity)' != '$(MSBuildProjectDirectory)/appsettings.json' " />
+        </ItemGroup>
     </Target>
-
-
 </Project>
