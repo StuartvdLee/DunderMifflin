@@ -1,6 +1,6 @@
-name: Deploy Dunder Mifflin application
+name: Deploy Dunder Mifflin Remote MCP server
 
-run-name: Deploy Dunder Mifflin application
+run-name: Deploy Dunder Mifflin Remote MCP server
 
 on:
   workflow_dispatch:
@@ -34,7 +34,7 @@ jobs:
           tenant-id: ${{ secrets.TENANT_ID }}
           subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
 
-      - name: Deploy app
+      - name: Deploy remote MCP server
         uses: Azure/webapps-deploy@v3.0.6
         with:
           app-name: dundermifflin-app-azurefest # Temp name because dundermifflin-app is being held hostage in another subscription
