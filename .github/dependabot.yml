@@ -7,3 +7,19 @@ updates:
       day: "monday"
       time: "07:00"
       timezone: "Europe/Amsterdam"
+    groups:
+      entity-framework-core:
+        patterns:
+          - "Microsoft.EntityFrameworkCore*"
+          - "Npgsql.EntityFrameworkCore.PostgreSQL"
+      model-context-protocol:
+        patterns:
+          - "ModelContextProtocol*"
+      microsoft-extensions:
+        patterns:
+          - "Microsoft.Extensions.*"
+      testing:
+        patterns:
+          - "coverlet.collector"
+          - "Microsoft.NET.Test.Sdk"
+          - "xunit*"
