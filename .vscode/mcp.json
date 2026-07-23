@@ -1,0 +1,15 @@
+{
+    "inputs": [],
+    "servers": {
+        "Dunder Mifflin MCP local": {
+            "type": "stdio",
+            "command": "dotnet",
+            "args": [
+                "run",
+                "--project",
+                "~/path/to/DunderMifflin.Mcp.Local",
+                "--no-build"
+            ]
+        }
+    }
+}
